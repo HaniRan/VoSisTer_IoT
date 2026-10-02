@@ -9,7 +9,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js');</script>
+<script>
+document.documentElement.classList.add('js');
+// Foto tidak ketemu -> coba .png/.jpg/.jpeg/.webp, kalau tetap tidak ada tampilkan inisial
+function fotoLain(img){
+  var ext = ['png','jpg','jpeg','webp'], m = img.getAttribute('src').match(/^(.*)\.(\w+)$/);
+  var tried = (img.dataset.tried || (m ? m[2] : '')).split(',');
+  var next = m && ext.filter(function(e){ return tried.indexOf(e) < 0; })[0];
+  if (next){ tried.push(next); img.dataset.tried = tried.join(','); img.src = m[1] + '.' + next; return; }
+  var box = img.parentNode, ini = box.getAttribute('data-ini');
+  if (!ini){
+    ini = (img.alt || '?').split(/\s+/).filter(function(w){ return w && !/[.,\[\]]/.test(w); })
+      .slice(0, 2).map(function(w){ return w[0].toUpperCase(); }).join('');
+  }
+  img.remove(); box.appendChild(document.createTextNode(ini || '?'));
+}
+</script>
 <style>
 :root{
   --bg:#050505; --bg-2:#0b0b0f; --line:rgba(255,255,255,.1); --line-2:rgba(255,255,255,.2);
@@ -164,21 +179,6 @@ h1,h2,h3,h4{line-height:1.15;font-weight:700;letter-spacing:-.01em}
 .akses .arrow{margin-left:auto;color:var(--dim);font-size:16px}
 @media(max-width:900px){.akses{grid-template-columns:1fr}}
 
-/* ---------- timeline ---------- */
-.timeline{position:relative;padding-left:64px}
-.tl-line{position:absolute;left:21px;top:8px;bottom:8px;width:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
-.tl-fill{position:absolute;left:0;top:0;width:100%;height:0;background:linear-gradient(to bottom,var(--cyan),var(--indigo),var(--pink));box-shadow:0 0 12px rgba(6,182,212,.6);border-radius:2px}
-.tl-item{position:relative;padding-bottom:38px}
-.tl-item:last-child{padding-bottom:0}
-.tl-dot{position:absolute;left:-64px;top:-2px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#0b0b10;border:1px solid var(--line-2);font-size:12px;font-weight:700;color:var(--dim);font-variant-numeric:tabular-nums;transition:border-color .6s var(--ease),color .6s var(--ease),box-shadow .6s var(--ease),background .6s var(--ease)}
-.tl-item.on .tl-dot{border-color:var(--cyan);color:#fff;background:linear-gradient(135deg,rgba(6,182,212,.35),rgba(79,70,229,.35));box-shadow:0 0 0 5px rgba(6,182,212,.12),0 0 22px rgba(6,182,212,.45)}
-.tl-date{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
-.tl-item h4{font-size:1.15rem;margin-bottom:6px;transition:color .6s var(--ease)}
-.tl-item p{font-size:14px;color:var(--muted);max-width:480px}
-.js .tl-item.rv{translate:24px 0}
-.js .tl-item.rv.in{translate:none}
-@media(max-width:560px){.timeline{padding-left:56px}.tl-dot{left:-56px;width:38px;height:38px;font-size:11px}.tl-line{left:18px}}
-
 /* ---------- galeri ---------- */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:16px}
 .gal{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line);background:var(--bg-2)}
@@ -235,12 +235,32 @@ h1,h2,h3,h4{line-height:1.15;font-weight:700;letter-spacing:-.01em}
 /* ---------- footer & misc ---------- */
 footer{border-top:1px solid var(--line);background:var(--bg);padding:48px 0 32px;position:relative;z-index:1}
 footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:center}
-.refs p{font-size:14px;color:var(--muted);padding-left:28px;text-indent:-28px}
-.refs p+p{margin-top:10px}
 .to-top{position:fixed;right:24px;bottom:24px;z-index:60;width:84px;height:84px;border-radius:20px;border:2px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(6,182,212,.4);cursor:pointer;animation:float 4s ease-in-out infinite;object-fit:cover;transition:transform .45s cubic-bezier(.175,.885,.32,1.275),box-shadow .45s,border-color .45s}
 @media(min-width:768px){.to-top{width:120px;height:120px;right:40px;bottom:40px}}
 .to-top:hover{animation-play-state:paused;transform:scale(1.12) rotate(-10deg) translateY(-10px);box-shadow:0 15px 40px rgba(236,72,153,.7);border-color:rgba(236,72,153,.5)}
 @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(6deg)}}
+
+/* ---------- struktur tim: dosen ---------- */
+.dosen{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.dosen .card{text-align:center;padding:36px 24px;display:flex;flex-direction:column;align-items:center}
+.dosen .av{width:150px;height:150px;margin-bottom:24px;border-radius:18px;overflow:hidden;position:relative;display:grid;place-items:center;font-size:48px;font-weight:700;color:rgba(255,255,255,.9);border:1px solid var(--line-2);box-shadow:0 20px 40px -14px rgba(0,0,0,.6)}
+.dosen .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dosen .r{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px}
+.dosen h3{font-size:1.25rem;line-height:1.3;margin-bottom:10px}
+.dosen p{font-size:14px;color:var(--muted)}
+.divider{display:flex;align-items:center;gap:18px;margin:96px 0 110px;font-size:13px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line-2)}
+@media(max-width:900px){.dosen{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
+
+/* ---------- logbook ---------- */
+.logbook{min-width:640px}
+.logbook th{background:rgba(255,255,255,.04)}
+.logbook td.no{width:64px;text-align:center;color:var(--dim);font-variant-numeric:tabular-nums}
+.logbook th.no{text-align:center}
+.logbook td.tgl{width:230px;color:#fff;white-space:nowrap}
+.logbook td strong{display:block;margin-bottom:4px}
+.logbook tbody tr{transition:background .25s}
+.logbook tbody tr:hover{background:rgba(6,182,212,.05)}
 
 [data-tilt]{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--ts,1));will-change:transform}
 /* Animasi muncul saat di-scroll. Kalau JS mati, konten tetap tampil */
@@ -278,41 +298,34 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
   <div class="wrap">
     <a href="#home" class="brand">VoSisTer_<span class="c-cyan">IoT</span></a>
     <div class="nav-links">
-      <a href="#pendahuluan">Pendahuluan</a>
-      <a href="#proyek">Proyek</a>
+      <a href="#home">Beranda</a>
+      <a href="#team">Struktur Tim</a>
+      <a href="#latar">Latar Belakang</a>
       <a href="#modul">Modul &amp; Aplikasi</a>
-      <a href="#metodologi">Pelaksanaan</a>
-      <a href="#hasil">Hasil</a>
-      <a href="#refleksi">Refleksi</a>
+      <a href="#logbook">Logbook</a>
       <a href="#galeri">Dokumentasi</a>
-      <a href="#team">Tim</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Buka menu"><svg class="i"><use href="#i-menu"/></svg></button>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#pendahuluan">Pendahuluan</a>
-    <a href="#proyek">Proyek</a>
+    <a href="#home">Beranda</a>
+    <a href="#team">Struktur Tim</a>
+    <a href="#latar">Latar Belakang, Tujuan &amp; Manfaat</a>
     <a href="#modul">Modul &amp; Aplikasi</a>
-    <a href="#konsep">Tinjauan Pustaka</a>
-    <a href="#metodologi">Pelaksanaan</a>
-    <a href="#hasil">Hasil</a>
-    <a href="#refleksi">Refleksi</a>
-    <a href="#evaluasi">Evaluasi</a>
-    <a href="#penutup">Penutup</a>
+    <a href="#logbook">Logbook</a>
     <a href="#galeri">Dokumentasi</a>
-    <a href="#team">Tim</a>
   </div>
 </nav>
 
-<!-- ================= HERO ================= -->
+<!-- ================= 1. BERANDA ================= -->
 <header class="hero" id="home">
   <div>
     <div class="pill rv">Proyek Kepemimpinan Mahasiswa PPG</div>
     <h1 class="rv z">Kolaborasi Hebat<br><span class="typed" id="typed">Inovasi IoT</span><span class="caret"></span></h1>
     <p class="rv">Otomotif · TJKT · Kelistrikan<br>Trainer sistem starter berbasis IoT dan absensi sidik jari guru yang terhubung ke WhatsApp kurikulum.</p>
     <div class="btns rv">
-      <a href="#proyek" class="btn solid">Lihat Proyek Kami</a>
-      <a href="#modul" class="btn"><svg class="i"><use href="#i-book"/></svg> Modul &amp; Aplikasi</a>
+      <a href="#latar" class="btn solid">Lihat Proyek Kami</a>
+      <a href="#team" class="btn">Struktur Tim</a>
     </div>
   </div>
 </header>
@@ -324,7 +337,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
   </div>
 </div>
 
-<!-- Identitas proyek -->
+<!-- Identitas proyek (bagian dari Beranda) -->
 <section class="section" style="padding:64px 0">
   <div class="wrap-sm rv">
     <div class="tbl-wrap">
@@ -332,7 +345,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
         <tr><td class="k">Judul Proyek</td><td class="v">Meningkatkan Kemampuan Pembelajaran Sistem Starter melalui Trainer Sistem Starter dengan Bantuan Sistem IoT, serta Aplikasi Absensi Sidik Jari Terintegrasi WhatsApp Kurikulum</td></tr>
         <tr><td class="k">Tema Kepemimpinan</td><td class="v">Kepemimpinan Kolaboratif Lintas Disiplin dalam Inovasi Teknologi Sekolah</td></tr>
         <tr><td class="k">Nama Kelompok</td><td class="v">VoSisTer_IoT</td></tr>
-        <tr><td class="k">Dosen Pembimbing</td><td class="v">Prof. Dr. Ir. Fiskia Rera Baharuddin, S.T., M.T.</td></tr>
+        <tr><td class="k">Dosen Pendamping</td><td class="v">Prof. Dr. Ir. Fiskia Rera Baharuddin, S.T., M.T.</td></tr>
+        <tr><td class="k">Dosen Pembimbing Lapangan</td><td class="v"><span class="isi">[Nama DPL 1]</span><br><span class="isi">[Nama DPL 2]</span></td></tr>
         <tr><td class="k">Lokasi Pelaksanaan</td><td class="v">SMK Negeri 3 Makassar &amp; SMK Negeri 10 Makassar</td></tr>
         <tr><td class="k">Periode Proyek</td><td class="v">24 Juli 2026 – 10 Oktober 2026</td></tr>
         <tr><td class="k">Institusi</td><td class="v">PPG – Universitas Negeri Makassar</td></tr>
@@ -341,570 +355,42 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
   </div>
 </section>
 
-<!-- ================= BAB I ================= -->
-<section class="section alt" id="pendahuluan">
-  <div class="wrap">
-    <div class="g2 mb-l" style="align-items:center;gap:64px">
-      <div class="glow-frame rv l" data-tilt data-tilt-max="5">
-        <div class="media">
-          <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video pengenalan proyek</div>
-          <!-- Video: images/vid_pengenalan.mp4 -->
-          <video autoplay loop muted playsinline><source src="images/vid_pengenalan.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
-        </div>
-      </div>
-      <div class="rv r">
-        <span class="bab">Bab I · Pendahuluan</span>
-        <h2 class="h2">Latar Belakang<br><span class="c-cyan">Proyek Kepemimpinan.</span></h2>
-        <div class="prose muted">
-          <p>Sistem starter adalah materi inti di jurusan Otomotif, tetapi pembelajarannya masih banyak mengandalkan teori dan gambar. Siswa sulit melihat langsung bagaimana arus mengalir dari baterai, kunci kontak, relay, dan solenoid sampai ke motor starter. Di sisi lain, siswa SMK sekarang juga perlu mengenal IoT untuk monitoring dan kontrol jarak jauh.</p>
-          <p>Masalah yang kami temukan ada tiga: belum ada media praktik sistem starter yang interaktif dan bisa dipantau datanya, siswa kesulitan mengidentifikasi kerusakan sistem starter, dan pencatatan kehadiran guru masih manual sehingga bagian kurikulum lambat mengetahui siapa yang hadir.</p>
-          <p>Masalah ini tidak bisa diselesaikan satu bidang saja. Otomotif memahami sistem starter, Kelistrikan menangani rangkaian, dan TJKT menguasai jaringan, IoT, serta database. Karena itu kami memilih tema kepemimpinan kolaboratif lintas disiplin.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="g2">
-      <div class="rv l">
-        <h3 class="sub">1.2 Tujuan Proyek</h3>
-        <p class="soft" style="margin-bottom:18px"><strong>Tujuan umum:</strong> meningkatkan kemampuan pembelajaran sistem starter melalui trainer berbantuan IoT, sekaligus mempermudah pemantauan kehadiran guru lewat absensi sidik jari yang terhubung ke WhatsApp kurikulum.</p>
-        <p style="font-weight:600;margin-bottom:10px">Tujuan khusus:</p>
-        <ol class="list tight">
-          <li>Membuat media pembelajaran yang inovatif dan interaktif.</li>
-          <li>Memahami sistem starter dan penerapan IoT.</li>
-          <li>Menerapkan teknologi IoT untuk monitoring dan kontrol.</li>
-          <li>Melatih kepemimpinan, kerja sama, dan pemecahan masalah.</li>
-          <li>Meningkatkan pemahaman siswa tentang sistem starter konvensional maupun berbasis IoT.</li>
-          <li>Meningkatkan kemampuan siswa mengidentifikasi masalah pada sistem starter.</li>
-          <li>Membuat absensi guru berbasis sidik jari yang datanya tersimpan di database.</li>
-          <li>Mengirim laporan kehadiran guru secara otomatis ke WhatsApp bagian kurikulum.</li>
-        </ol>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">1.3 Manfaat &amp; Dampak</h3>
-        <div class="stack">
-          <div class="card side bl-cyan"><h4>Bagi komunitas sasaran</h4><p>Siswa mendapat media praktik yang nyata, guru otomotif punya alat bantu mengajar, dan bagian kurikulum langsung tahu kehadiran guru tanpa rekap manual.</p></div>
-          <div class="card side bl-indigo"><h4>Bagi pengembangan kepemimpinan</h4><p>Kami berlatih membagi tugas, berkomunikasi lintas bidang, mengambil keputusan bersama, dan menyelesaikan masalah teknis dengan tenggat waktu.</p></div>
-          <div class="card side bl-pink"><h4>Bagi sekolah</h4><p>Sekolah memiliki trainer yang bisa dipakai berulang dan sistem absensi digital yang mendukung administrasi serta kedisiplinan.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PROYEK ================= -->
-<section class="section" id="proyek">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <h2 class="h2">Inovasi <span class="grad">Produk Kami</span></h2>
-      <p class="lead">Dua luaran utama dari gabungan perangkat lunak, perangkat keras, dan mekanik.</p>
-    </div>
-
-    <div class="g2 gap-sm mb-l">
-      <div class="card rv" data-tilt data-tilt-max="4">
-        <div class="big-icon c-indigo"><svg class="i"><use href="#i-battery"/></svg></div>
-        <h3>Trainer Sistem Starter IoT</h3>
-        <p class="muted small">Panel trainer sistem starter yang dilengkapi ESP32/ESP8266 serta sensor tegangan dan arus. Data kelistrikan bisa dipantau secara real-time dan starter bisa dikontrol lewat smartphone.</p>
-        <div class="label">Alur kerja</div>
-        <div class="flow"><span>Smartphone</span><i>→</i><span>Wi-Fi</span><i>→</i><span>ESP32</span><i>→</i><span>Relay</span><i>→</i><span>Motor starter</span></div>
-        <div class="label">Indikator keberhasilan</div>
-        <ul class="list tight small">
-          <li>Trainer sistem starter berhasil dirakit dan berfungsi.</li>
-          <li>Sistem IoT dapat memonitor data secara real-time.</li>
-          <li>Kontrol starter melalui smartphone dapat berjalan.</li>
-        </ul>
-      </div>
-      <div class="card rv" data-tilt data-tilt-max="4">
-        <div class="big-icon c-pink"><svg class="i"><use href="#i-finger"/></svg></div>
-        <h3>Absensi Sidik Jari Terintegrasi WhatsApp</h3>
-        <p class="muted small">Guru absen dengan memindai sidik jari. Data kehadiran langsung tersimpan di database, lalu sistem mengirim notifikasi ke WhatsApp bagian kurikulum.</p>
-        <div class="label">Alur kerja</div>
-        <div class="flow"><span>Scan jari</span><i>→</i><span>Verifikasi</span><i>→</i><span>Database</span><i>→</i><span>WA Kurikulum</span></div>
-        <div class="label">Fitur utama</div>
-        <ul class="list tight small">
-          <li>Scan sidik jari sehingga absensi tidak bisa diwakilkan.</li>
-          <li>Data kehadiran tersimpan otomatis ke database.</li>
-          <li>Notifikasi kehadiran otomatis ke WhatsApp kurikulum.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="g3 rv">
-      <div>
-        <h3 class="sub sm">Sasaran</h3>
-        <ul class="list tight small">
-          <li>Peserta didik SMK</li><li>Guru / instruktur otomotif</li><li>Bagian kurikulum &amp; lingkungan sekolah</li><li>Tim proyek</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="sub sm">Sumber Daya</h3>
-        <ul class="list tight small">
-          <li>Panel trainer sistem starter</li><li>Baterai, kunci kontak, relay, motor starter, solenoid</li><li>Sekring, kabel, dan konektor</li><li>Sensor tegangan &amp; arus, sensor sidik jari</li><li>ESP32/ESP8266, Wi-Fi, smartphone</li><li>Multimeter dan alat kerja otomotif</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="sub sm">Strategi</h3>
-        <ul class="list tight small">
-          <li>Koordinasi dan pembagian tugas tim</li><li>Komunikasi dan kolaborasi rutin</li><li>Penyusunan jadwal dan tahapan kerja</li><li>Pengambilan keputusan bersama</li><li>Monitoring dan evaluasi berkala</li><li>Konsultasi rutin dengan dosen pembimbing</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= MODUL & APLIKASI =================
-     CARA MENGISI LINK:
-     - Modul PDF: taruh file di folder "modul/" dengan nama yang sama seperti di href,
-       atau ganti href dengan link Google Drive.
-     - Aplikasi: isi href="" dengan link aplikasi kalian (contoh: https://absensi-sekolah.web.app).
-     - Kalau href dibiarkan kosong (href=""), tombol otomatis tampil "Link menyusul". -->
-<section class="section alt" id="modul">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Luaran Proyek</span>
-      <h2 class="h2">Modul &amp; <span class="grad">Aplikasi</span></h2>
-      <p class="lead">Silakan baca modulnya dan coba langsung aplikasinya.</p>
-    </div>
-
-    <div class="g2 gap-sm">
-      <!-- Modul 1: Sistem Starter -->
-      <div class="card modul rv">
-        <div class="top">
-          <div class="ico a"><svg class="i"><use href="#i-battery"/></svg></div>
-          <div><div class="kind">Modul Pembelajaran</div><h3>Trainer Sistem Starter IoT</h3></div>
-        </div>
-        <p class="muted small" style="margin-bottom:14px">Panduan belajar untuk siswa dan guru: dari cara kerja sistem starter, merangkai trainer, sampai mengontrol dan memantau starter lewat smartphone.</p>
-        <ol class="toc">
-          <li>Tujuan pembelajaran dan keselamatan kerja</li>
-          <li>Komponen sistem starter dan fungsinya</li>
-          <li>Cara kerja sistem starter konvensional</li>
-          <li>Wiring diagram trainer dan rangkaian IoT</li>
-          <li>Mengoperasikan trainer lewat smartphone</li>
-          <li>Lembar kerja: identifikasi kerusakan (troubleshooting)</li>
-          <li>Evaluasi dan soal latihan</li>
-        </ol>
-        <div class="actions">
-          <!-- GANTI href: file modul PDF / link Google Drive -->
-          <a class="btn solid sm" data-link href="modul/modul-sistem-starter.pdf" target="_blank" rel="noopener"><svg class="i"><use href="#i-file"/></svg> Baca Modul</a>
-          <!-- GANTI href: link aplikasi kontrol & monitoring trainer -->
-          <a class="btn sm" data-link href="" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg> Buka Aplikasi Trainer</a>
-        </div>
-      </div>
-
-      <!-- Modul 2: Absensi -->
-      <div class="card modul rv">
-        <div class="top">
-          <div class="ico b"><svg class="i"><use href="#i-finger"/></svg></div>
-          <div><div class="kind">Panduan Pengguna</div><h3>Aplikasi Absensi Sidik Jari</h3></div>
-        </div>
-        <p class="muted small" style="margin-bottom:14px">Panduan untuk guru, admin, dan bagian kurikulum: mendaftarkan sidik jari, melakukan absen, melihat rekap, dan mengatur notifikasi WhatsApp.</p>
-        <ol class="toc">
-          <li>Gambaran sistem dan alur data</li>
-          <li>Mendaftarkan sidik jari guru</li>
-          <li>Cara melakukan absensi harian</li>
-          <li>Melihat dan mengunduh rekap kehadiran</li>
-          <li>Mengatur nomor WhatsApp kurikulum</li>
-          <li>Masalah umum dan cara mengatasinya</li>
-        </ol>
-        <div class="actions">
-          <!-- GANTI href: file panduan PDF / link Google Drive -->
-          <a class="btn solid sm" data-link href="modul/panduan-aplikasi-absensi.pdf" target="_blank" rel="noopener"><svg class="i"><use href="#i-file"/></svg> Baca Panduan</a>
-          <!-- GANTI href: link aplikasi / dashboard absensi -->
-          <a class="btn sm" data-link href="" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg> Buka Aplikasi Absensi</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Video demo. GANTI href dengan link YouTube / Google Drive -->
-    <div class="akses rv">
-      <a data-link href="" target="_blank" rel="noopener">
-        <svg class="i"><use href="#i-play"/></svg>
-        <div><div class="t">Video Demo Trainer Sistem Starter</div><div class="d">Kontrol &amp; monitoring lewat smartphone</div></div>
-        <svg class="i arrow"><use href="#i-arrow"/></svg>
-      </a>
-      <a data-link href="" target="_blank" rel="noopener">
-        <svg class="i"><use href="#i-play"/></svg>
-        <div><div class="t">Video Demo Aplikasi Absensi</div><div class="d">Scan sidik jari sampai notifikasi WhatsApp</div></div>
-        <svg class="i arrow"><use href="#i-arrow"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB II ================= -->
-<section class="section" id="konsep">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Bab II</span>
-      <h2 class="h2">Tinjauan Pustaka &amp; <span class="grad">Konsep</span></h2>
-      <p class="lead">Teori kepemimpinan dan konsep teknis yang menjadi dasar proyek.</p>
-    </div>
-
-    <h3 class="sub rv">2.1 Landasan Teori Kepemimpinan</h3>
-    <div class="g3 gap-sm mb-l">
-      <div class="card side bl-cyan rv"><h4>Transformasional</h4><p>Pemimpin menginspirasi lewat visi bersama dan mendorong ide baru (Bass &amp; Riggio). Kami pakai untuk menyatukan tiga bidang di bawah satu tujuan: media pembelajaran yang lebih baik.</p></div>
-      <div class="card side bl-indigo rv"><h4>Situasional</h4><p>Gaya memimpin disesuaikan dengan kesiapan anggota (Hersey &amp; Blanchard): mengarahkan saat anggota baru mengenal materi, mendelegasikan saat sudah menguasai bagiannya.</p></div>
-      <div class="card side bl-pink rv"><h4>Terbagi (Shared)</h4><p>Setiap bidang memimpin di keahliannya: Otomotif di mekanik, Kelistrikan di rangkaian, TJKT di IoT dan jaringan, sementara koordinasi tetap dijaga bersama.</p></div>
-    </div>
-
-    <div class="g2">
-      <div class="rv l">
-        <h3 class="sub">Konsep Teknis Pendukung</h3>
-        <ul class="list">
-          <li><strong>Sistem starter:</strong> saat kunci kontak diputar ke START, arus mengaktifkan relay dan solenoid, lalu motor starter memutar flywheel untuk menghidupkan mesin.</li>
-          <li><strong>Internet of Things:</strong> perangkat fisik yang terhubung ke internet sehingga bisa mengirim data dan menerima perintah dari jarak jauh.</li>
-          <li><strong>ESP32/ESP8266:</strong> mikrokontroler dengan Wi-Fi bawaan untuk membaca sensor dan mengendalikan relay.</li>
-          <li><strong>Biometrik sidik jari:</strong> identitas diverifikasi dari pola sidik jari yang unik.</li>
-        </ul>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">2.2 Studi Terkait</h3>
-        <ul class="list">
-          <li><strong>Kusyandi &amp; Mubarak (2021):</strong> membuat simulator sistem starter tipe direct drive berbasis Android sebagai media pembelajaran kelistrikan otomotif. Media ini dinilai sangat layak oleh ahli media (92,5%) dan ahli materi (93%). Bedanya, simulator mereka virtual, sedangkan trainer kami berupa rangkaian nyata yang bisa dipegang dan diukur siswa.</li>
-          <li><strong>Riyanti, Hariadi, &amp; Wibowo (2022)</strong> serta <strong>Wibowo &amp; Setyadjit (2022):</strong> membuat kontrol starter mobil berbasis IoT dengan ESP32, relay, dan aplikasi Blynk lewat Wi-Fi, lengkap dengan monitoring suhu mesin, dan berhasil diuji pada beberapa jenis mobil. Konsep ini kami adaptasi ke panel trainer, sehingga tujuannya untuk pembelajaran, bukan kendaraan.</li>
-          <li><strong>Syarifuddin &amp; Djamaludin (2021):</strong> membuat absensi berbasis IoT dengan face recognition dan fingerprint (NodeMCU ESP8266). Datanya dikirim ke server dan konfirmasi dikirim lewat WhatsApp kepada pegawai. Kami menerapkan ide serupa untuk guru, dengan notifikasi dikirim ke bagian kurikulum.</li>
-          <li><strong>Pembelajaran dari proyek sebelumnya:</strong> penelitian trainer umumnya belum dilengkapi IoT, dan penelitian IoT starter belum dirancang untuk pembelajaran. Proyek kami menggabungkan keduanya, ditambah absensi guru sebagai solusi administrasi sekolah.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB III ================= -->
-<section class="section alt" id="metodologi">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Bab III</span>
-      <h2 class="h2">Metodologi &amp; <span class="grad">Pelaksanaan</span></h2>
-      <p class="lead">Tahapan yang kami lalui untuk mewujudkan proyek ini.</p>
-    </div>
-
-    <div class="g2 mb-l">
-      <div>
-        <h3 class="sub rv">3.1 Timeline Kegiatan</h3>
-        <div class="timeline" id="timeline">
-          <div class="tl-line"><div class="tl-fill" id="tlFill"></div></div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>01</span></div>
-            <div class="tl-date">24 - 30 Juli</div>
-            <h4>Identifikasi kebutuhan</h4>
-            <p>Observasi pembelajaran sistem starter di kelas otomotif dan pencatatan kehadiran guru, lalu diskusi masalah dengan guru dan bagian kurikulum.</p>
-          </div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>02</span></div>
-            <div class="tl-date"><span class="isi">[tanggal]</span></div>
-            <h4>Perancangan trainer &amp; wiring diagram</h4>
-            <p>Menentukan tata letak panel, daftar komponen, dan wiring diagram sistem starter beserta rangkaian IoT-nya.</p>
-          </div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>03</span></div>
-            <div class="tl-date"><span class="isi">[tanggal]</span></div>
-            <h4>Perakitan panel trainer</h4>
-            <p>Memasang baterai, kunci kontak, relay, solenoid, motor starter, dan sekring pada panel trainer.</p>
-          </div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>04</span></div>
-            <div class="tl-date"><span class="isi">[tanggal]</span></div>
-            <h4>Instalasi komponen elektronik &amp; IoT</h4>
-            <p>Memasang ESP32, sensor tegangan dan arus, relay kontrol, serta sensor sidik jari untuk absensi.</p>
-          </div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>05</span></div>
-            <div class="tl-date"><span class="isi">[tanggal]</span></div>
-            <h4>Pemrograman</h4>
-            <p>Memprogram ESP32 untuk kontrol dan monitoring lewat smartphone, lalu membuat database absensi dan notifikasi WhatsApp.</p>
-          </div>
-          <div class="tl-item rv">
-            <div class="tl-dot"><span>06</span></div>
-            <div class="tl-date"><span class="isi">[tanggal]</span></div>
-            <h4>Pengujian, demonstrasi &amp; modul</h4>
-            <p>Uji fungsi dengan multimeter, uji coba absensi, demonstrasi di kelas, dan penyusunan modul serta panduan penggunaan.</p>
-          </div>
-        </div>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">3.2 Tahapan Pelaksanaan</h3>
-        <ul class="list">
-          <li><strong>Perencanaan:</strong> identifikasi masalah di kelas otomotif dan administrasi absensi, diskusi ide, pembagian tugas per bidang, serta penyusunan jadwal dan daftar alat. Alat bantu: brainstorming, mindmap, wiring diagram, grup WhatsApp tim.</li>
-          <li><strong>Implementasi:</strong> perakitan panel, pemasangan relay, sensor, dan ESP32, pemrograman kontrol &amp; monitoring, pembuatan database dan integrasi WhatsApp. Tiap bidang bekerja paralel, lalu hasilnya digabung dan diuji bersama.</li>
-          <li><strong>Monitoring &amp; evaluasi:</strong> rapat progres berkala, uji fungsi komponen dengan multimeter, uji coba absensi dan pengiriman WA. Instrumen: checklist pengujian, lembar observasi, dan kuesioner siswa serta guru.</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3 class="sub rv">3.3 Peran &amp; Tanggung Jawab</h3>
-    <div class="tbl-wrap rv">
-      <table class="tbl wide">
-        <thead><tr><th>Nama</th><th>Peran</th><th>Tanggung Jawab Utama</th></tr></thead>
-        <tbody>
-          <tr><td>Wahyudin</td><td>Ketua Projek</td><td>Memimpin dan mengoordinasikan seluruh tim, menyusun jadwal kerja, memantau progres tiap koordinator, memimpin rapat, serta menjadi penghubung dengan dosen pembimbing dan pihak sekolah.</td></tr>
-          <tr><td>Roesmang</td><td>Koordinator Sistem Starter</td><td>Menentukan komponen sistem starter, memastikan rangkaian dan cara kerjanya sesuai standar otomotif, serta menyiapkan skenario gangguan untuk latihan troubleshooting.</td></tr>
-          <tr><td>Ricky Ridman</td><td>Koordinator Konstruksi Trainer</td><td>Merancang dan membuat rangka serta panel trainer, mengatur tata letak komponen, dan memastikan trainer kokoh, rapi, dan aman dipakai.</td></tr>
-          <tr><td>Muhammad Anis Fauzan</td><td>Koordinator Media Pembelajaran</td><td>Menyusun modul pembelajaran, lembar kerja siswa, dan soal evaluasi, serta menyelaraskan penggunaan trainer dengan capaian pembelajaran.</td></tr>
-          <tr><td>Mallarangan</td><td>Koordinator Pengujian Produk</td><td>Menyusun checklist pengujian, menguji fungsi trainer dan aplikasi absensi, mencatat hasil uji, dan memastikan produk siap didemonstrasikan.</td></tr>
-          <tr><td>Salman Hidayat</td><td>Koordinator Sistem IoT</td><td>Merakit dan mengintegrasikan ESP32, sensor tegangan dan arus, serta relay kontrol, agar trainer bisa dipantau dan dikendalikan lewat smartphone.</td></tr>
-          <tr><td>Andi Hanifah Putri Rani</td><td>Koordinator Jaringan Data & Pemrograman</td><td>Mengatur konfigurasi jaringan, membangun database absensi sidik jari, dan mengintegrasikan notifikasi WhatsApp ke bagian kurikulum.</td></tr>
-          <tr><td>Abdul Fitrah Mine</td><td>Koordinator Kelistrikan & K3</td><td>Menyusun wiring diagram, memasang sekring dan pengaman, menjaga kestabilan daya rangkaian, serta menerapkan prosedur K3 selama perakitan dan pengujian.</td></tr>
-
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB IV ================= -->
-<section class="section" id="hasil">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Bab IV</span>
-      <h2 class="h2">Hasil &amp; <span class="grad">Pembahasan</span></h2>
-    </div>
-
-    <div class="g2 mb-l">
-      <div class="rv l">
-        <h3 class="sub">4.1 Capaian Proyek</h3>
-        <ul class="list">
-          <li><strong>Output:</strong> 1 unit trainer sistem starter IoT yang bisa dimonitor dan dikontrol lewat smartphone, aplikasi absensi sidik jari dengan database dan notifikasi WhatsApp, serta modul untuk keduanya (lihat <a href="#modul" class="c-cyan">Modul &amp; Aplikasi</a>).</li>
-          <li><strong>Outcome bagi sekolah:</strong> siswa dapat melihat langsung alur kerja sistem starter beserta datanya, dan kurikulum menerima laporan kehadiran guru secara otomatis.</li>
-          <li><strong>Outcome bagi tim:</strong> kami terbiasa memimpin di bidang masing-masing, berkoordinasi lintas bidang, dan menyelesaikan masalah bersama.</li>
-        </ul>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">4.2 Analisis Dampak</h3>
-        <ul class="list">
-          <li><strong>Sosial:</strong> pembelajaran lebih menarik, kehadiran guru lebih terpantau.</li>
-          <li><strong>Ekonomi:</strong> trainer bisa dipakai berulang sehingga mengurangi kebutuhan kendaraan praktik; absensi digital mengurangi pemakaian kertas.</li>
-          <li><strong>Kepemimpinan:</strong> berkembangnya komunikasi, manajemen waktu, dan tanggung jawab.</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3 class="sub rv">4.3 Tantangan &amp; Solusi</h3>
-    <div class="tbl-wrap rv">
-      <table class="tbl wide">
-        <thead><tr><th>Tantangan</th><th>Penyebab</th><th>Solusi</th><th>Hasil</th></tr></thead>
-        <tbody>
-          <tr><td>Koordinasi antarbidang sulit</td><td>Jadwal tiap anggota berbeda</td><td>Rapat tetap mingguan dan update harian di grup WhatsApp</td><td>Berhasil</td></tr>
-          <tr><td>Perbedaan istilah teknis</td><td>Latar keahlian berbeda</td><td>Tiap bidang menjelaskan bagiannya dengan diagram sederhana</td><td>Berhasil</td></tr>
-          <tr><td>Wi-Fi tidak stabil</td><td>Sinyal lemah di area bengkel</td><td>Hotspot khusus dan reconnect otomatis di program</td><td>Berhasil</td></tr>
-          <tr><td>Arus motor starter tinggi</td><td>Mikrokontroler tidak boleh menerima arus besar</td><td>Relay starter dan sekring sebagai pengaman</td><td>Berhasil</td></tr>
-          <tr><td>Sidik jari gagal terbaca</td><td>Jari basah/kotor atau pendaftaran kurang baik</td><td>Pendaftaran ulang beberapa kali dan jari cadangan</td><td>Berhasil</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB V ================= -->
-<section class="section alt" id="refleksi">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Bab V</span>
-      <h2 class="h2">Refleksi <span class="grad">Kepemimpinan</span></h2>
-      <p class="lead">5.1 Pembelajaran individu dengan model What? So What? Now What?</p>
-    </div>
-
-    <div class="g3 gap-sm mb-l">
-      <div class="card side bl-cyan swhat rv">
-        <h4>What?</h4><div class="tag">Apa yang terjadi</div>
-        <p>Kami, mahasiswa PPG bidang Otomotif, TJKT, dan Kelistrikan, bekerja sama membangun dua produk. Setiap anggota memegang peran sesuai keahlian dan bergantian memimpin saat bagiannya dikerjakan.</p>
-        
-      </div>
-      <div class="card side bl-indigo swhat rv">
-        <h4>So What?</h4><div class="tag">Mengapa penting</div>
-        <p>Pemimpin tidak harus paling tahu segalanya. Memimpin berarti mendengarkan, memercayai keahlian orang lain, dan menjaga semua orang bergerak ke tujuan yang sama.</p>
-      </div>
-      <div class="card side bl-pink swhat rv">
-        <h4>Now What?</h4><div class="tag">Tindak lanjut</div>
-        <p>Kami akan terus melatih komunikasi dan manajemen waktu, dan membawa cara kerja kolaboratif ini ke kelas yang kami ajar nanti.</p>
-      </div>
-    </div>
-
-    <div class="g2">
-      <div class="rv l">
-        <h3 class="sub">5.2 Dinamika Kelompok</h3>
-        <ul class="list">
-          <li><strong>Proses kolaborasi:</strong> awalnya kami bekerja per bidang, lalu belajar menyatukan hasil lewat uji coba bersama.</li>
-          <li><strong>Konflik &amp; resolusi:</strong> <span class="isi">[Ceritakan konflik yang terjadi, misalnya beda pendapat soal desain atau pembagian waktu, dan cara menyelesaikannya]</span></li>
-          <li><strong>Teamwork:</strong> keberhasilan satu bagian bergantung pada bagian lain, jadi komunikasi rutin menjadi kunci.</li>
-        </ul>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">5.3 Penerapan Teori Kepemimpinan</h3>
-        <ul class="list">
-          <li><strong>Paling efektif:</strong> kepemimpinan terbagi, karena setiap bidang paling memahami bagiannya sendiri.</li>
-          <li><strong>Penyesuaian di lapangan:</strong> saat tenggat mendekat kami lebih banyak saling mengarahkan (situasional); saat longgar, setiap anggota diberi keleluasaan penuh.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB VI ================= -->
-<section class="section" id="evaluasi">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Bab VI</span>
-      <h2 class="h2">Evaluasi &amp; <span class="grad">Keberlanjutan</span></h2>
-    </div>
-
-    <h3 class="sub rv">6.1 Evaluasi Kinerja Proyek</h3>
-    <div class="tbl-wrap mb-l rv">
-      <table class="tbl wide">
-        <thead><tr><th>Aspek</th><th>Indikator Keberhasilan</th><th>Pencapaian</th></tr></thead>
-        <tbody>
-          <tr><td>Perakitan trainer</td><td>Trainer berhasil dirakit dan berfungsi</td><td>Ya</td></tr>
-          <tr><td>Wiring &amp; komponen</td><td>Wiring dan komponen bekerja sesuai rancangan</td><td>Ya</td></tr>
-          <tr><td>Monitoring IoT</td><td>Data terpantau secara real-time</td><td>Proses</td></tr>
-          <tr><td>Kontrol smartphone</td><td>Starter dapat dikontrol lewat smartphone</td><td>Ya</td></tr>
-          <tr><td>Absensi &amp; notifikasi</td><td>Data masuk database dan terkirim ke WA kurikulum</td><td>Proses</td></tr>
-          <tr><td>Modul</td><td>Modul trainer dan panduan absensi selesai dan bisa dipakai</td><td>Proses</td></tr>
-          <tr><td>Pemahaman peserta</td><td>Peserta didik mampu menggunakan dan memahami trainer</td><td>Proses</td></tr>
-          <tr><td>Kompetensi tim</td><td>Peningkatan kompetensi teknis, digital, kolaborasi, dan kepemimpinan</td><td>Ya</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="g2">
-      <div class="rv l">
-        <h3 class="sub">6.2 Keberlanjutan</h3>
-        <ul class="list">
-          <li><strong>Rencana:</strong> trainer dan modulnya diserahkan ke jurusan Otomotif untuk pembelajaran, dan absensi dipakai bagian kurikulum.</li>
-          <li><strong>Pengembangan:</strong> dashboard web untuk riwayat data trainer dan rekap absensi bulanan otomatis.</li>
-          <li><strong>Replikasi:</strong> konsep trainer IoT bisa diterapkan pada sistem pengisian dan penerangan.</li>
-        </ul>
-      </div>
-      <div class="rv r">
-        <h3 class="sub">6.3 Rekomendasi</h3>
-        <ul class="list">
-          <li><strong>Proyek serupa:</strong> libatkan lintas bidang sejak perencanaan dan siapkan anggaran cadangan komponen.</li>
-          <li><strong>Kurikulum kepemimpinan:</strong> proyek berbasis masalah nyata efektif untuk melatih kepemimpinan.</li>
-          <li><strong>Kemitraan:</strong> kerja sama dengan bengkel atau industri otomotif untuk pengembangan trainer.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BAB VII ================= -->
-<section class="section alt" id="penutup">
-  <div class="wrap-sm">
-    <div class="center mb-l rv">
-      <span class="bab">Bab VII</span>
-      <h2 class="h2"><span class="grad">Penutup</span></h2>
-    </div>
-    <div class="rv mb-m">
-      <h3 class="sub">7.1 Kesimpulan</h3>
-      <p class="soft" style="font-size:1.1rem">VoSisTer_IoT memadukan keahlian Otomotif, TJKT, dan Kelistrikan untuk menghasilkan trainer sistem starter berbasis IoT dan absensi sidik jari yang terhubung ke WhatsApp kurikulum, lengkap dengan modul penggunaannya. Pelajaran kepemimpinan terpenting bagi kami: tim yang beragam akan kuat bila setiap anggota dipercaya memimpin di bidangnya dan komunikasi dijaga terus.</p>
-    </div>
-    <div class="rv">
-      <h3 class="sub">7.2 Saran</h3>
-      <ul class="list">
-        <li><strong>Perbaikan proyek:</strong> fitur deteksi kerusakan otomatis pada trainer dan cadangan penyimpanan data saat internet terputus.</li>
-        <li><strong>Pengembangan kepemimpinan:</strong> perbanyak proyek kolaborasi lintas bidang agar terbiasa memimpin dan dipimpin.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ================= LAMPIRAN: GALERI =================
-     Taruh foto/video di folder images/ dengan nama sesuai src di bawah.
-     Selama file belum ada, kotak akan menampilkan keterangan fotonya. -->
-<section class="section" id="galeri">
-  <div class="wrap">
-    <div class="center mb-l rv">
-      <span class="bab">Lampiran</span>
-      <h2 class="h2">Dokumentasi <span class="grad">Kegiatan</span></h2>
-      <p class="lead">Dari perencanaan sampai implementasi.</p>
-    </div>
-
-    <div class="gallery" id="gallery">
-      <div class="gal rv z">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Perakitan alat</div>
-        <img src="images/foto1.jpg" alt="Perakitan alat" loading="lazy" onerror="this.remove()">
-        <div class="cap">Perakitan alat</div>
-      </div>
-      <div class="gal rv z">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Uji coba sensor</div>
-        <img src="images/foto2.jpg" alt="Uji coba sensor" loading="lazy" onerror="this.remove()">
-        <div class="cap">Uji coba sensor</div>
-      </div>
-      <div class="gal w2 h2 rv z">
-        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video demonstrasi trainer &amp; absensi</div>
-        <video autoplay loop muted playsinline><source src="images/vid2.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
-        <div class="cap">Demonstrasi trainer &amp; absensi</div>
-      </div>
-      <div class="gal rv z">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Diskusi tim</div>
-        <img src="images/foto3.jpg" alt="Diskusi tim" loading="lazy" onerror="this.remove()">
-        <div class="cap">Diskusi tim</div>
-      </div>
-      <div class="gal rv z">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Tampilan aplikasi absensi</div>
-        <img src="images/foto4.jpg" alt="Aplikasi absensi" loading="lazy" onerror="this.remove()">
-        <div class="cap">Tampilan aplikasi absensi</div>
-      </div>
-
-      <!-- Muncul setelah klik "Lihat semua" -->
-      <div class="gal w2 extra">
-        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video kegiatan</div>
-        <video autoplay loop muted playsinline><source src="images/vid3.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
-        <div class="cap">Video kegiatan</div>
-      </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Wiring panel</div>
-        <img src="images/foto5.jpg" alt="Wiring panel" loading="lazy" onerror="this.remove()">
-        <div class="cap">Wiring panel</div>
-      </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Konsultasi dosen</div>
-        <img src="images/foto6.jpg" alt="Konsultasi dosen" loading="lazy" onerror="this.remove()">
-        <div class="cap">Konsultasi dosen</div>
-      </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pembelajaran di kelas</div>
-        <img src="images/foto7.jpg" alt="Pembelajaran di kelas" loading="lazy" onerror="this.remove()">
-        <div class="cap">Pembelajaran di kelas</div>
-      </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Foto bersama</div>
-        <img src="images/foto8.jpg" alt="Foto bersama" loading="lazy" onerror="this.remove()">
-        <div class="cap">Foto bersama</div>
-      </div>
-    </div>
-
-    <div class="center" style="margin-top:44px">
-      <button class="btn" id="galBtn"><svg class="i"><use href="#i-images"/></svg> <span>Lihat semua</span></button>
-    </div>
-
-    
-  </div>
-</section>
-
-<!-- ================= TIM =================
+<!-- ================= 2. STRUKTUR TIM =================
      Foto di folder images/ (format .png / .jpg / .jpeg / .webp):
-     dosen, wahyudin, roesmang, ricky, anis, mallarangan, salman, hanifah, fitrah
+     dosen, dpl1, dpl2, wahyu, rosmang, ricky, anies, aan, salman, rani, mine
      Selama foto belum ada, tampil inisial nama. -->
 <section class="section alt" id="team" style="padding-top:112px;padding-bottom:128px;overflow:hidden">
   <div class="wrap" style="max-width:1100px">
-    <div class="center rv" style="margin-bottom:110px">
+    <div class="center rv mb-l">
+      <span class="bab">Struktur Tim</span>
       <h2 class="h2" style="font-size:clamp(2.4rem,6vw,3.8rem);text-transform:uppercase">Tim <span class="grad">VoSisTer_IoT</span></h2>
-      <p class="lead">Dosen pembimbing dan delapan anggota di balik proyek lintas bidang ini.</p>
+      <p class="lead">Dosen pendamping, dua dosen pembimbing lapangan, dan delapan anggota di balik proyek lintas bidang ini.</p>
     </div>
- 
-    <div class="team">
-      <div class="member utama rv l">
-        <div class="ghost">PEMBIMBING</div>
-        <div class="photo" data-tilt data-tilt-scale="1.05">
-          <div class="frame" style="border-color:var(--cyan)"></div>
-          <div class="pic" style="background:linear-gradient(135deg,#06b6d4,#0e7490)"><img src="images/dosen.png" alt="Dosen Pembimbing" onerror="fotoLain(this)"></div>
-        </div>
-        <div class="info">
-          <div class="role c-cyan">Dosen Pembimbing Lapangan</div>
-          <h3>Prof. Dr. Ir. Fiskia Rera Baharuddin, S.T., M.T.</h3>
-          <p>Memberikan arahan metodologis, mengevaluasi ketercapaian target, dan membimbing penyusunan refleksi kepemimpinan.</p>
-        </div>
+
+    <div class="dosen">
+      <div class="card rv" data-tilt data-tilt-max="4">
+        <div class="av" data-ini="FR" style="background:linear-gradient(135deg,#06b6d4,#0e7490)"><img src="images/dosen.png" alt="Dosen Pendamping" onerror="fotoLain(this)"></div>
+        <div class="r c-cyan">Dosen Pendamping</div>
+        <h3>Prof. Dr. Ir. Fiskia Rera Baharuddin, S.T., M.T.</h3>
+        <p>Memberikan arahan metodologis, mengevaluasi ketercapaian target, dan membimbing penyusunan refleksi kepemimpinan.</p>
       </div>
- 
+      <div class="card rv" data-tilt data-tilt-max="4">
+        <div class="av" data-ini="DPL" style="background:linear-gradient(135deg,#4f46e5,#312e81)"><img src="images/dpl1.png" alt="Dosen Pembimbing Lapangan 1" onerror="fotoLain(this)"></div>
+        <div class="r c-indigo">Dosen Pembimbing Lapangan</div>
+        <h3><span class="isi">[Nama DPL 1]</span></h3>
+        <p>Mendampingi tim selama pelaksanaan proyek di sekolah dan memantau kegiatan di lapangan.</p>
+      </div>
+      <div class="card rv" data-tilt data-tilt-max="4">
+        <div class="av" data-ini="DPL" style="background:linear-gradient(135deg,#ec4899,#9d174d)"><img src="images/dpl2.png" alt="Dosen Pembimbing Lapangan 2" onerror="fotoLain(this)"></div>
+        <div class="r c-pink">Dosen Pembimbing Lapangan</div>
+        <h3><span class="isi">[Nama DPL 2]</span></h3>
+        <p>Mendampingi tim selama pelaksanaan proyek di sekolah dan memantau kegiatan di lapangan.</p>
+      </div>
+    </div>
+
+    <div class="divider rv">Anggota Tim</div>
+
+    <div class="team">
       <div class="member rev rv r">
         <div class="ghost">KETUA</div>
         <div class="photo" data-tilt data-tilt-scale="1.05">
@@ -1006,23 +492,233 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
   </div>
 </section>
 
-<!-- ================= DAFTAR PUSTAKA ================= -->
-<section class="section" id="pustaka" style="padding:80px 0">
-  <div class="wrap-sm rv">
-    <h3 class="sub">Daftar Pustaka</h3>
-    <div class="refs">
-      <p>Bass, B. M., &amp; Riggio, R. E. (2006). <em>Transformational Leadership</em> (2nd ed.). Lawrence Erlbaum Associates.</p>
-      <p>Espressif Systems. (2023). <em>ESP32 Series Datasheet</em>. Espressif Systems.</p>
-      <p>Hersey, P., Blanchard, K. H., &amp; Johnson, D. E. (2013). <em>Management of Organizational Behavior: Leading Human Resources</em> (10th ed.). Pearson.</p>
-      <p>Kusyandi, K., &amp; Mubarak, I. (2021). Development of starter system direct drive type simulator as learning media in automotive electrical system courses. <em>Journal of Mechanical Engineering Education, 8</em>(2). <a class="c-cyan" href="https://ejournal.upi.edu/index.php/jmee/article/view/40894" target="_blank" rel="noopener">Link</a></p>
-      <p>Northouse, P. G. (2021). <em>Leadership: Theory and Practice</em> (9th ed.). SAGE Publications.</p>
-      <p>Riyanti, K. P. K., Hariadi, B., &amp; Wibowo, W. A. (2022). Rancang bangun sistem kontrol starter berbasis IoT (Internet of Things). <em>Jurnal Nucleus, 1</em>(2). <a class="c-cyan" href="https://ejournal.undar.or.id/index.php/Nucleus/article/download/47/22" target="_blank" rel="noopener">Link</a></p>
-      <p>Rolfe, G., Freshwater, D., &amp; Jasper, M. (2001). <em>Critical Reflection for Nursing and the Helping Professions: A User's Guide</em>. Palgrave Macmillan.</p>
-      <p>Syarifuddin, M. A., &amp; Djamaludin. (2021). Rancang bangun aplikasi absensi dengan face recognition dan fingerprint berbasis IoT menggunakan metode prototype. <em>JUTIS (Jurnal Teknik Informatika Unis), 9</em>(2). <a class="c-cyan" href="https://ejournal.unis.ac.id/index.php/jutis/article/download/2751/1640" target="_blank" rel="noopener">Link</a></p>
-      <p>Tuckman, B. W. (1965). Developmental sequence in small groups. <em>Psychological Bulletin, 63</em>(6), 384–399.</p>
-      <p>Wibowo, W. A., &amp; Setyadjit, K. (2022). Rancang bangun sistem kontrol starter berbasis IoT (Internet of Things). <em>Prosiding Senakama, 1</em>. <a class="c-cyan" href="https://conference.untag-sby.ac.id/index.php/sentek/article/download/1193/642/2016" target="_blank" rel="noopener">Link</a></p>
-    
+<!-- ================= 3. LATAR BELAKANG, TUJUAN & MANFAAT ================= -->
+<section class="section" id="latar">
+  <div class="wrap">
+    <div class="g2 mb-l" style="align-items:center;gap:64px">
+      <div class="glow-frame rv l" data-tilt data-tilt-max="5">
+        <div class="media">
+          <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video pengenalan proyek</div>
+          <!-- Video: images/vid_pengenalan.mp4 -->
+          <video autoplay loop muted playsinline><source src="images/vid_pengenalan.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
+        </div>
+      </div>
+      <div class="rv r">
+        <span class="bab">Latar Belakang</span>
+        <h2 class="h2">Latar Belakang<br><span class="c-cyan">Proyek Kepemimpinan.</span></h2>
+        <div class="prose muted">
+          <p>Sistem starter adalah materi inti di jurusan Otomotif, tetapi pembelajarannya masih banyak mengandalkan teori dan gambar. Siswa sulit melihat langsung bagaimana arus mengalir dari baterai, kunci kontak, relay, dan solenoid sampai ke motor starter. Di sisi lain, siswa SMK sekarang juga perlu mengenal IoT untuk monitoring dan kontrol jarak jauh.</p>
+          <p>Masalah yang kami temukan ada tiga: belum ada media praktik sistem starter yang interaktif dan bisa dipantau datanya, siswa kesulitan mengidentifikasi kerusakan sistem starter, dan pencatatan kehadiran guru masih manual sehingga bagian kurikulum lambat mengetahui siapa yang hadir.</p>
+          <p>Masalah ini tidak bisa diselesaikan satu bidang saja. Otomotif memahami sistem starter, Kelistrikan menangani rangkaian, dan TJKT menguasai jaringan, IoT, serta database. Karena itu kami memilih tema kepemimpinan kolaboratif lintas disiplin.</p>
+        </div>
+      </div>
     </div>
+
+    <div class="g2">
+      <div class="rv l">
+        <h3 class="sub">Tujuan Proyek</h3>
+        <p class="soft" style="margin-bottom:18px"><strong>Tujuan umum:</strong> meningkatkan kemampuan pembelajaran sistem starter melalui trainer berbantuan IoT, sekaligus mempermudah pemantauan kehadiran guru lewat absensi sidik jari yang terhubung ke WhatsApp kurikulum.</p>
+        <p style="font-weight:600;margin-bottom:10px">Tujuan khusus:</p>
+        <ol class="list tight">
+          <li>Membuat media pembelajaran yang inovatif dan interaktif.</li>
+          <li>Memahami sistem starter dan penerapan IoT.</li>
+          <li>Menerapkan teknologi IoT untuk monitoring dan kontrol.</li>
+          <li>Melatih kepemimpinan, kerja sama, dan pemecahan masalah.</li>
+          <li>Meningkatkan pemahaman siswa tentang sistem starter konvensional maupun berbasis IoT.</li>
+          <li>Meningkatkan kemampuan siswa mengidentifikasi masalah pada sistem starter.</li>
+          <li>Membuat absensi guru berbasis sidik jari yang datanya tersimpan di database.</li>
+          <li>Mengirim laporan kehadiran guru secara otomatis ke WhatsApp bagian kurikulum.</li>
+        </ol>
+      </div>
+      <div class="rv r">
+        <h3 class="sub">Manfaat Proyek</h3>
+        <div class="stack">
+          <div class="card side bl-cyan"><h4>Bagi komunitas sasaran</h4><p>Siswa mendapat media praktik yang nyata, guru otomotif punya alat bantu mengajar, dan bagian kurikulum langsung tahu kehadiran guru tanpa rekap manual.</p></div>
+          <div class="card side bl-indigo"><h4>Bagi pengembangan kepemimpinan</h4><p>Kami berlatih membagi tugas, berkomunikasi lintas bidang, mengambil keputusan bersama, dan menyelesaikan masalah teknis dengan tenggat waktu.</p></div>
+          <div class="card side bl-pink"><h4>Bagi sekolah</h4><p>Sekolah memiliki trainer yang bisa dipakai berulang dan sistem absensi digital yang mendukung administrasi serta kedisiplinan.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4. MODUL & APLIKASI =================
+     CARA MENGISI LINK:
+     - Modul PDF: taruh file di folder "modul/" dengan nama yang sama seperti di href,
+       atau ganti href dengan link Google Drive.
+     - Aplikasi: isi href="" dengan link aplikasi kalian (contoh: https://absensi-sekolah.web.app).
+     - Kalau href dibiarkan kosong (href=""), tombol otomatis tampil "Link menyusul". -->
+<section class="section alt" id="modul">
+  <div class="wrap">
+    <div class="center mb-l rv">
+      <span class="bab">Luaran Proyek</span>
+      <h2 class="h2">Modul &amp; <span class="grad">Aplikasi</span></h2>
+      <p class="lead">Silakan baca modulnya dan coba langsung aplikasinya.</p>
+    </div>
+
+    <div class="g2 gap-sm">
+      <!-- Modul 1: Sistem Starter -->
+      <div class="card modul rv">
+        <div class="top">
+          <div class="ico a"><svg class="i"><use href="#i-battery"/></svg></div>
+          <div><div class="kind">Modul Pembelajaran</div><h3>Trainer Sistem Starter IoT</h3></div>
+        </div>
+        <p class="muted small" style="margin-bottom:14px">Panduan belajar untuk siswa dan guru: dari cara kerja sistem starter, merangkai trainer, sampai mengontrol dan memantau starter lewat smartphone.</p>
+        <div class="flow" style="margin-bottom:20px"><span>Smartphone</span><i>→</i><span>Wi-Fi</span><i>→</i><span>ESP32</span><i>→</i><span>Relay</span><i>→</i><span>Motor starter</span></div>
+        <ol class="toc">
+          <li>Tujuan pembelajaran dan keselamatan kerja</li>
+          <li>Komponen sistem starter dan fungsinya</li>
+          <li>Cara kerja sistem starter konvensional</li>
+          <li>Wiring diagram trainer dan rangkaian IoT</li>
+          <li>Mengoperasikan trainer lewat smartphone</li>
+          <li>Lembar kerja: identifikasi kerusakan (troubleshooting)</li>
+          <li>Evaluasi dan soal latihan</li>
+        </ol>
+        <div class="actions">
+          <!-- GANTI href: file modul PDF / link Google Drive -->
+          <a class="btn solid sm" data-link href="modul/modul-sistem-starter.pdf" target="_blank" rel="noopener"><svg class="i"><use href="#i-file"/></svg> Baca Modul</a>
+          <!-- GANTI href: link aplikasi kontrol & monitoring trainer -->
+          <a class="btn sm" data-link href="" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg> Buka Aplikasi Trainer</a>
+        </div>
+      </div>
+
+      <!-- Modul 2: Absensi -->
+      <div class="card modul rv">
+        <div class="top">
+          <div class="ico b"><svg class="i"><use href="#i-finger"/></svg></div>
+          <div><div class="kind">Panduan Pengguna</div><h3>Aplikasi Absensi Sidik Jari</h3></div>
+        </div>
+        <p class="muted small" style="margin-bottom:14px">Panduan untuk guru, admin, dan bagian kurikulum: mendaftarkan sidik jari, melakukan absen, melihat rekap, dan mengatur notifikasi WhatsApp.</p>
+        <div class="flow" style="margin-bottom:20px"><span>Scan jari</span><i>→</i><span>Verifikasi</span><i>→</i><span>Database</span><i>→</i><span>WA Kurikulum</span></div>
+        <ol class="toc">
+          <li>Gambaran sistem dan alur data</li>
+          <li>Mendaftarkan sidik jari guru</li>
+          <li>Cara melakukan absensi harian</li>
+          <li>Melihat dan mengunduh rekap kehadiran</li>
+          <li>Mengatur nomor WhatsApp kurikulum</li>
+          <li>Masalah umum dan cara mengatasinya</li>
+        </ol>
+        <div class="actions">
+          <!-- GANTI href: file panduan PDF / link Google Drive -->
+          <a class="btn solid sm" data-link href="modul/panduan-aplikasi-absensi.pdf" target="_blank" rel="noopener"><svg class="i"><use href="#i-file"/></svg> Baca Panduan</a>
+          <!-- GANTI href: link aplikasi / dashboard absensi -->
+          <a class="btn sm" data-link href="" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg> Buka Aplikasi Absensi</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video demo. GANTI href dengan link YouTube / Google Drive -->
+    <div class="akses rv">
+      <a data-link href="" target="_blank" rel="noopener">
+        <svg class="i"><use href="#i-play"/></svg>
+        <div><div class="t">Video Demo Trainer Sistem Starter</div><div class="d">Kontrol &amp; monitoring lewat smartphone</div></div>
+        <svg class="i arrow"><use href="#i-arrow"/></svg>
+      </a>
+      <a data-link href="" target="_blank" rel="noopener">
+        <svg class="i"><use href="#i-play"/></svg>
+        <div><div class="t">Video Demo Aplikasi Absensi</div><div class="d">Scan sidik jari sampai notifikasi WhatsApp</div></div>
+        <svg class="i arrow"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. LOGBOOK =================
+     Tambah kegiatan: salin satu baris <tr> di bawah, lalu ubah nomor, hari/tanggal, dan uraiannya.
+     Teks kuning = masih perlu diisi (hapus <span class="isi"> setelah diganti). -->
+<section class="section" id="logbook">
+  <div class="wrap">
+    <div class="center mb-l rv">
+      <span class="bab">Catatan Kegiatan</span>
+      <h2 class="h2">Logbook <span class="grad">Kegiatan</span></h2>
+      <p class="lead">Catatan kegiatan tim dari awal hingga akhir proyek (24 Juli 2026 – 10 Oktober 2026).</p>
+    </div>
+    <div class="tbl-wrap rv">
+      <table class="tbl logbook">
+        <thead><tr><th class="no">No</th><th>Hari / Tanggal</th><th>Uraian Kegiatan</th></tr></thead>
+        <tbody>
+          <tr><td class="no">1</td><td class="tgl">Jumat, 24 Juli –<br>Kamis, 30 Juli 2026</td><td><strong>Identifikasi kebutuhan</strong>Observasi pembelajaran sistem starter di kelas otomotif dan pencatatan kehadiran guru, lalu diskusi masalah dengan guru dan bagian kurikulum.</td></tr>
+          <tr><td class="no">2</td><td class="tgl"><span class="isi">[Hari, tanggal]</span></td><td><strong>Perancangan trainer &amp; wiring diagram</strong>Menentukan tata letak panel, daftar komponen, dan wiring diagram sistem starter beserta rangkaian IoT-nya.</td></tr>
+          <tr><td class="no">3</td><td class="tgl"><span class="isi">[Hari, tanggal]</span></td><td><strong>Perakitan panel trainer</strong>Memasang baterai, kunci kontak, relay, solenoid, motor starter, dan sekring pada panel trainer.</td></tr>
+          <tr><td class="no">4</td><td class="tgl"><span class="isi">[Hari, tanggal]</span></td><td><strong>Instalasi komponen elektronik &amp; IoT</strong>Memasang ESP32, sensor tegangan dan arus, relay kontrol, serta sensor sidik jari untuk absensi.</td></tr>
+          <tr><td class="no">5</td><td class="tgl"><span class="isi">[Hari, tanggal]</span></td><td><strong>Pemrograman</strong>Memprogram ESP32 untuk kontrol dan monitoring lewat smartphone, lalu membuat database absensi dan notifikasi WhatsApp.</td></tr>
+          <tr><td class="no">6</td><td class="tgl"><span class="isi">[Hari, tanggal]</span></td><td><strong>Pengujian, demonstrasi &amp; modul</strong>Uji fungsi dengan multimeter, uji coba absensi, demonstrasi di kelas, dan penyusunan modul serta panduan penggunaan.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6. DOKUMENTASI =================
+     Taruh foto/video di folder images/ dengan nama sesuai src di bawah.
+     Selama file belum ada, kotak akan menampilkan keterangan fotonya. -->
+<section class="section alt" id="galeri">
+  <div class="wrap">
+    <div class="center mb-l rv">
+      <span class="bab">Dokumentasi</span>
+      <h2 class="h2">Dokumentasi <span class="grad">Kegiatan</span></h2>
+      <p class="lead">Dari perencanaan sampai implementasi.</p>
+    </div>
+
+    <div class="gallery" id="gallery">
+      <div class="gal rv z">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Perakitan alat</div>
+        <img src="images/foto1.jpg" alt="Perakitan alat" loading="lazy" onerror="this.remove()">
+        <div class="cap">Perakitan alat</div>
+      </div>
+      <div class="gal rv z">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Uji coba sensor</div>
+        <img src="images/foto2.jpg" alt="Uji coba sensor" loading="lazy" onerror="this.remove()">
+        <div class="cap">Uji coba sensor</div>
+      </div>
+      <div class="gal w2 h2 rv z">
+        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video demonstrasi trainer &amp; absensi</div>
+        <video autoplay loop muted playsinline><source src="images/vid2.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
+        <div class="cap">Demonstrasi trainer &amp; absensi</div>
+      </div>
+      <div class="gal rv z">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Diskusi tim</div>
+        <img src="images/foto3.jpg" alt="Diskusi tim" loading="lazy" onerror="this.remove()">
+        <div class="cap">Diskusi tim</div>
+      </div>
+      <div class="gal rv z">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Tampilan aplikasi absensi</div>
+        <img src="images/foto4.jpg" alt="Aplikasi absensi" loading="lazy" onerror="this.remove()">
+        <div class="cap">Tampilan aplikasi absensi</div>
+      </div>
+
+      <!-- Muncul setelah klik "Lihat semua" -->
+      <div class="gal w2 extra">
+        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video kegiatan</div>
+        <video autoplay loop muted playsinline><source src="images/vid3.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
+        <div class="cap">Video kegiatan</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Wiring panel</div>
+        <img src="images/foto5.jpg" alt="Wiring panel" loading="lazy" onerror="this.remove()">
+        <div class="cap">Wiring panel</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Konsultasi dosen</div>
+        <img src="images/foto6.jpg" alt="Konsultasi dosen" loading="lazy" onerror="this.remove()">
+        <div class="cap">Konsultasi dosen</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pembelajaran di kelas</div>
+        <img src="images/foto7.jpg" alt="Pembelajaran di kelas" loading="lazy" onerror="this.remove()">
+        <div class="cap">Pembelajaran di kelas</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Foto bersama</div>
+        <img src="images/foto8.jpg" alt="Foto bersama" loading="lazy" onerror="this.remove()">
+        <div class="cap">Foto bersama</div>
+      </div>
+    </div>
+
+    <div class="center" style="margin-top:44px">
+      <button class="btn" id="galBtn"><svg class="i"><use href="#i-images"/></svg> <span>Lihat semua</span></button>
+    </div>
+
   </div>
 </section>
 
@@ -1141,24 +837,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;
     items.forEach(function(i){ io.observe(i); });
   } else { items.forEach(function(i){ i.classList.add('in'); }); }
 
-
-  // ===== Timeline: garis terisi mengikuti scroll =====
-  var tl = document.getElementById('timeline'), fill = document.getElementById('tlFill');
-  if (tl){
-    var tItems = tl.querySelectorAll('.tl-item'), tTick = false;
-    function tlUpdate(){
-      tTick = false;
-      var r = tl.getBoundingClientRect(), mark = window.innerHeight * 0.6;
-      var pct = Math.max(0, Math.min(1, (mark - r.top) / r.height));
-      fill.style.height = (pct * 100) + '%';
-      tItems.forEach(function(it){
-        var d = it.querySelector('.tl-dot').getBoundingClientRect();
-        it.classList.toggle('on', d.top + d.height / 2 < mark);
-      });
-    }
-    window.addEventListener('scroll', function(){ if (!tTick){ tTick = true; requestAnimationFrame(tlUpdate); } }, { passive: true });
-    window.addEventListener('resize', tlUpdate); tlUpdate();
-  }
 
   // Navbar
   var nav = document.getElementById('nav');
