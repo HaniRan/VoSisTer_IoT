@@ -93,6 +93,10 @@ svg.i{width:1em;height:1em;flex:none;fill:none;stroke:currentColor;stroke-width:
 
 /* ---------- layout ---------- */
 .wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+/* anti geser samping di HP */
+html{overflow-x:hidden}
+.section,footer,.hero,.marquee{overflow-x:clip}
+.marquee{overflow-x:hidden}
 .section{padding:72px 0;position:relative;z-index:1}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:64px}
 .center{text-align:center}
