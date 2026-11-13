@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panduan Penggunaan SIGAP – VoSisTer_IoT</title>
+<meta name="description" content="Panduan lengkap SIGAP (Sistem Informasi Guru Absen Pintar): 12 bab untuk admin, guru, Kepala Sekolah, dan Wakasek.">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var t = null;
+  try { t = localStorage.getItem('vosister-theme'); } catch(e){}
+  if (t !== 'light' && t !== 'dark') t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+<style>
+:root{
+  --bg:#050912; --bg-2:#0a1120; --bg-3:#0f1a2e;
+  --text:#eaf2ff; --soft:#c3d0e4; --muted:#8a9bb6; --dim:#5d6e8a;
+  --line:rgba(160,200,255,.12); --line-2:rgba(160,200,255,.22); --line-3:rgba(160,200,255,.07);
+  --surface:rgba(18,30,52,.55); --surface-2:rgba(120,170,255,.06); --hover:rgba(120,190,255,.09);
+  --nav-bg:rgba(5,9,18,.72); --menu-bg:rgba(8,14,28,.97);
+  --solid-bg:#eaf2ff; --solid-fg:#050912;
+  --teal:#16d6b4; --cyan:#22c3f0; --blue:#2f6fe4; --amber:#ffb547; --violet:#8b6cff;
+  --teal-t:#3ee6c6; --cyan-t:#5ad4f7; --blue-t:#7aa6ff; --amber-t:#ffc56b; --violet-t:#a993ff;
+  --ghost:rgba(150,200,255,.16); --grid:rgba(90,212,247,.09);
+  --shadow:0 30px 60px -20px rgba(0,0,0,.7);
+  --ph-bg:#0b1424; --ph-stripe:rgba(255,255,255,.025); --ph-text:rgba(200,220,255,.4);
+  --glow-op:1;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --f-disp:'Unbounded','Arial Black',system-ui,sans-serif;
+  --f-body:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#eef3fa; --bg-2:#e2eaf6; --bg-3:#d6e1f1;
+  --text:#081226; --soft:#26344d; --muted:#4b5b76; --dim:#6a7a94;
+  --line:rgba(10,30,70,.11); --line-2:rgba(10,30,70,.2); --line-3:rgba(10,30,70,.06);
+  --surface:rgba(255,255,255,.72); --surface-2:rgba(10,40,90,.045); --hover:rgba(10,60,140,.06);
+  --nav-bg:rgba(238,243,250,.82); --menu-bg:rgba(255,255,255,.98);
+  --solid-bg:#081226; --solid-fg:#fff;
+  --teal-t:#078a73; --cyan-t:#0679a6; --blue-t:#1d4fc0; --amber-t:#a85f00; --violet-t:#5b3fd6;
+  --ghost:rgba(10,40,90,.13); --grid:rgba(6,121,166,.1);
+  --shadow:0 30px 60px -24px rgba(10,30,70,.35);
+  --ph-bg:#dde6f3; --ph-stripe:rgba(10,30,70,.035); --ph-text:rgba(10,30,70,.45);
+  --glow-op:.45;
+  color-scheme:light;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(84px + env(safe-area-inset-top,0px))}
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:17px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .5s,color .5s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--nav-bg)}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+strong{color:var(--text);font-weight:700}
+svg.i{width:1em;height:1em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.125em}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+::selection{background:var(--cyan);color:#041018}
+/* ---------- latar halaman: grid sirkuit + cahaya ---------- */
+.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-fx .grid{position:absolute;inset:-2px;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 30%,transparent 80%)}
+.bg-fx .orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:calc(.35*var(--glow-op))}
+.bg-fx .o1{width:520px;height:520px;background:var(--teal);top:-18%;left:-12%}
+.bg-fx .o2{width:620px;height:620px;background:var(--blue);bottom:-30%;right:-14%}
+.cursor-glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(34,195,240,.10),transparent 62%);opacity:var(--glow-op);transition:opacity .4s;will-change:transform}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+h1,h2,h3,h4{font-family:var(--f-disp);font-weight:700;line-height:1.08;letter-spacing:-.02em}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--cyan-t);margin-bottom:18px}
+.kicker::before{content:"";width:28px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--teal),var(--cyan))}
+.center .kicker{justify-content:center}
+.h2{font-size:clamp(2.1rem,5vw,3.6rem);margin-bottom:18px}
+.h2 .out{color:transparent;-webkit-text-stroke:1.4px var(--text)}
+.lead{color:var(--muted);max-width:62ch;font-size:1.08rem}
+.center .lead{margin:0 auto}
+.grad{background:linear-gradient(100deg,var(--teal),var(--cyan) 40%,var(--blue) 70%,var(--teal));background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:220% center}}
+.muted{color:var(--muted)}.soft{color:var(--soft)}.small{font-size:15px}
+.c-teal{color:var(--teal-t)}.c-cyan{color:var(--cyan-t)}.c-blue{color:var(--blue-t)}.c-amber{color:var(--amber-t)}.c-violet{color:var(--violet-t)}
+/* ---------- nav ---------- */
+.progress_x{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);z-index:60;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--amber));box-shadow:0 0 12px var(--cyan)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:16px 0;padding-top:calc(16px + env(safe-area-inset-top,0px));transition:background .35s,border-color .35s,padding .35s}
+.nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid var(--line);padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-disp);font-weight:700;font-size:1.15rem;letter-spacing:-.03em}
+.brand img{width:38px;height:auto}
+.nav-links{display:flex;gap:6px;padding:5px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2)}
+.nav-links a{font-size:14px;font-weight:600;padding:8px 15px;border-radius:999px;color:var(--soft);transition:color .25s,background .25s}
+.nav-links a:hover,.nav-links a.on{color:var(--text);background:var(--hover)}
+.nav-links a.on{box-shadow:inset 0 0 0 1px var(--line-2)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.theme-btn{position:relative;width:64px;height:34px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface-2);cursor:pointer;color:var(--text);padding:0}
+.theme-btn .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;box-shadow:0 4px 14px rgba(34,195,240,.45);transition:transform .55s var(--ease),background .4s}
+:root[data-theme="light"] .theme-btn .knob{transform:translateX(30px) rotate(180deg);background:linear-gradient(135deg,var(--amber),#ff8a3d);box-shadow:0 4px 14px rgba(255,170,60,.5)}
+.theme-btn .sun{display:none}
+:root[data-theme="light"] .theme-btn .sun{display:block}
+:root[data-theme="light"] .theme-btn .moon{display:none}
+.menu-btn{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font-size:22px;cursor:pointer;place-items:center}
+.mobile-menu{display:none;margin:14px 20px 0;padding:22px;border-radius:20px;background:var(--menu-bg);border:1px solid var(--line);flex-direction:column;gap:4px;box-shadow:var(--shadow)}
+.mobile-menu.open{display:flex;animation:drop .4s var(--ease)}
+@keyframes drop{from{opacity:0;transform:translateY(-10px)}}
+.mobile-menu a{font-weight:600;padding:12px 6px;border-bottom:1px solid var(--line-3)}
+.mobile-menu a:last-child{border:0}
+@media(max-width:1000px){.nav-links{display:none}.menu-btn{display:grid}}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:14px;font-weight:700;font-size:15.5px;border:1px solid var(--line-2);cursor:pointer;background:var(--surface);color:var(--text);font-family:inherit;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .35s var(--ease),border-color .3s,background .3s,box-shadow .35s;overflow:hidden}
+.btn:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 14px 30px -14px rgba(34,195,240,.6)}
+.btn.solid{color:#03141c;border:0;background:linear-gradient(100deg,var(--teal),var(--cyan));box-shadow:0 10px 30px -10px rgba(34,195,240,.7)}
+.btn.solid::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .9s var(--ease)}
+.btn.solid:hover::after{transform:translateX(120%)}
+.btn.sm{padding:11px 20px;font-size:14.5px;border-radius:12px}
+.btn.off{opacity:.45;cursor:not-allowed;border-style:dashed;box-shadow:none}
+.btn.off:hover{transform:none;border-color:var(--line-2)}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:34px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-color .4s,transform .4s var(--ease),background-color .5s;isolation:isolate;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .4s;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(34,195,240,.14),transparent 60%)}
+.card:hover::before{opacity:1}
+.card:hover{border-color:var(--line-2)}
+
+.ph-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:12px 0;padding-top:calc(12px + env(safe-area-inset-top,0px));background:var(--nav-bg);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid var(--line)}
+.ph-nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ph-nav .back{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;color:var(--soft)}
+.ph-nav .back:hover{color:var(--text)}
+.ph-nav .nav-right .btn{padding:9px 16px;font-size:13.5px;border-radius:12px}
+.phero{position:relative;z-index:1;padding:132px 0 40px}
+.phero h1{font-size:clamp(2.2rem,6vw,4.2rem);margin:6px 0 16px}
+.toc2{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.toc2 a{font-size:14px;font-weight:600;padding:8px 15px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--soft);transition:border-color .25s,color .25s}
+.toc2 a b{color:var(--cyan-t);margin-right:4px}
+.toc2 a:hover{border-color:var(--cyan);color:var(--text)}
+main.guide{position:relative;z-index:1;padding-bottom:90px}
+.guide .card{margin-bottom:22px}
+.ch{padding:0;border-radius:28px;scroll-margin-top:96px}
+.ch-h{display:flex;gap:18px;align-items:center;padding:26px 32px;border-bottom:1px solid var(--line)}
+.ch-n{flex:none;width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-family:var(--f-disp);font-weight:700;font-size:1.2rem;color:#03141c;background:linear-gradient(135deg,var(--teal),var(--cyan));box-shadow:0 12px 26px -10px var(--cyan)}
+.ch-h h2{font-size:clamp(1.25rem,3vw,1.8rem)}
+.ch-b{display:grid;grid-template-columns:1fr 1.05fr;gap:34px;padding:30px 32px 34px;align-items:start}
+.ch-b.flip .shots2{order:-1}
+.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
+.steps li{counter-increment:s;position:relative;padding-left:44px;color:var(--soft);font-size:16px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13.5px;color:#03141c;background:linear-gradient(135deg,var(--teal),var(--cyan))}
+.steps li b{color:var(--text)}
+.tip{margin-top:20px;padding:14px 18px;border-radius:14px;border:1px dashed var(--amber);background:var(--surface-2);font-size:15px;color:var(--soft)}
+.watch{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-weight:700;font-size:14.5px;color:var(--cyan-t)}
+.watch:hover{text-decoration:underline}
+.shots2{display:grid;gap:14px;min-width:0}
+.shotbox{margin:0}
+.shotbox img{width:100%;border-radius:14px;border:1px solid var(--line);cursor:zoom-in}
+.shotbox figcaption{font-size:13.5px;color:var(--dim);margin-top:6px}
+.pad2{padding:30px 34px}
+.rolegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:14px}
+.rolegrid b{color:var(--cyan-t);font-family:var(--f-disp);font-size:1rem}
+code.path{font:700 14px ui-monospace,Consolas,monospace;padding:3px 10px;border-radius:8px;color:var(--amber-t);background:var(--surface-2);border:1px solid var(--line-2)}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px;color:var(--text)}
+.faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--cyan-t)}
+.faq details[open] summary::after{content:"\2013"}
+.faq p{margin-top:10px;color:var(--soft);font-size:15.5px}
+footer.pf{position:relative;z-index:1;padding:40px 0;text-align:center;border-top:1px solid var(--line);color:var(--muted);font-size:14.5px}
+footer.pf b{display:block;font-family:var(--f-disp);color:var(--text);font-size:1.2rem;margin-bottom:6px}
+.lb{position:fixed;inset:0;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;background:rgba(3,8,16,.93)}
+.lb.open{display:flex}.lb img{max-width:100%;max-height:80vh;border-radius:12px}.lb p{color:#dbe6f5;font-weight:600}
+.lb button{position:absolute;top:14px;right:14px;width:46px;height:46px;border-radius:14px;border:1px solid var(--line-2);background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer}
+@media(max-width:900px){
+  .ch-b{grid-template-columns:1fr;gap:24px;padding:24px 22px 28px}.ch-b.flip .shots2{order:0}
+  .ch-h{padding:22px}.rolegrid{grid-template-columns:1fr}.pad2{padding:24px 22px}
+  .ph-nav .back span{display:none}.phero{padding-top:112px}
+}
+@media print{
+  :root,:root[data-theme="dark"]{--bg:#fff;--text:#081226;--soft:#26344d;--muted:#4b5b76;--dim:#6a7a94;--line:rgba(10,30,70,.15);--line-2:rgba(10,30,70,.25);--surface:#fff;--surface-2:#f2f6fc;--cyan-t:#0679a6;--amber-t:#a85f00;--nav-bg:#fff}
+  .ph-nav,.bg-fx,.toc2,.watch,.lb{display:none!important}
+  body{font-size:12.5px;background:#fff}
+  .phero{padding:10px 0 14px}.phero h1{font-size:2rem}
+  .card{box-shadow:none;break-inside:avoid;page-break-inside:avoid;backdrop-filter:none;margin-bottom:14px;border-radius:16px}
+  .ch-b{grid-template-columns:1fr 1fr;gap:20px;padding:18px 20px}.ch-b.flip .shots2{order:0}
+  .ch-h{padding:14px 20px}.ch-n,.steps li::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .grad{background:none;color:#0679a6;-webkit-text-fill-color:#0679a6}
+  *{animation:none!important}
+}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="currentColor"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+</svg>
+<div class="bg-fx" aria-hidden="true"><div class="grid"></div><div class="orb o1"></div><div class="orb o2"></div></div>
+
+<nav class="ph-nav">
+  <div class="wrap">
+    <a href="index.html#modul" class="back"><svg class="i"><use href="#i-back"/></svg><span>Kembali ke portofolio</span></a>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Ganti mode terang / gelap"><span class="knob"><svg class="i moon"><use href="#i-moon"/></svg><svg class="i sun"><use href="#i-sun"/></svg></span></button>
+      <a class="btn solid" href="modul/panduan-sigap.pdf" download><svg class="i"><use href="#i-file"/></svg> Unduh PDF</a>
+    </div>
+  </div>
+</nav>
+
+<header class="phero">
+  <div class="wrap">
+    <span class="kicker">Panduan Pengguna</span>
+    <h1>Panduan Penggunaan <span class="grad">SIGAP</span></h1>
+    <p class="lead">Sistem Informasi Guru Absen Pintar: absensi guru otomatis dengan pengenalan wajah AI. Panduan ini disusun per peran dan mengikuti urutan video tutorial.</p>
+    <nav class="toc2" aria-label="Daftar bab"><a href="#bab01"><b>01</b> Masuk ke Aplikasi</a><a href="#bab02"><b>02</b> Dashboard</a><a href="#bab03"><b>03</b> Absensi dengan Kamera</a><a href="#bab04"><b>04</b> Data Guru</a><a href="#bab05"><b>05</b> Akun Guru</a><a href="#bab06"><b>06</b> Pengajuan Izin</a><a href="#bab07"><b>07</b> Laporan Harian</a><a href="#bab08"><b>08</b> Rekap Bulanan</a><a href="#bab09"><b>09</b> Kalender Kerja</a><a href="#bab10"><b>10</b> Backup &amp; Pulihkan</a><a href="#bab11"><b>11</b> Portal Guru</a><a href="#bab12"><b>12</b> Portal Pimpinan</a></nav>
+  </div>
+</header>
+
+<main class="guide"><div class="wrap">
+<section class="card pad2">
+  <h3 style="font-size:1.25rem">Sebelum mulai</h3>
+  <div class="rolegrid">
+    <div><b>Admin &amp; Operator</b><p class="muted small">Mengelola data guru, akun, laporan, rekap, kalender, dan backup. Bab 01 sampai 10.</p></div>
+    <div><b>Guru</b><p class="muted small">Absen di depan kamera, lalu melihat riwayat dan mengajukan izin dari HP. Bab 03 dan 11.</p></div>
+    <div><b>Kepala Sekolah &amp; Wakasek</b><p class="muted small">Menyetujui izin dan memantau kehadiran dari HP. Bab 06 dan 12.</p></div>
+  </div>
+  <p class="small soft" style="margin-top:18px"><strong>Akses:</strong> admin <code class="path">/login</code> &nbsp; guru <code class="path">/guru</code> &nbsp; pimpinan <code class="path">/pimpinan</code>. Alamat lengkapnya ada di menu Pengaturan aplikasi.</p>
+</section>
+<section class="card ch" id="bab01">
+<div class="ch-h"><span class="ch-n">01</span><div><h2>Masuk ke Aplikasi</h2><span class="muted small">Untuk: Admin / Operator</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka SIGAP di browser komputer sekolah (<b>http://127.0.0.1:5000</b>), atau gunakan jendela absensi yang terbuka setelah aplikasi dinyalakan.</li><li>Ketik <b>username</b> akun Anda.</li><li>Ketik <b>password</b> (tampil sebagai titik).</li><li>Tekan <b>Masuk</b>.</li><li>Menu di sisi kiri menyesuaikan hak akses akun. Tombol keluar ada di pojok kiri bawah.</li></ol><div class="tip"><strong>Tips:</strong> Setiap akun hanya melihat menu yang diizinkan admin, sehingga tampilan operator dan admin bisa berbeda.</div><a class="watch" href="index.html?t=33#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (0:33)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/login.jpg" alt="Halaman masuk SIGAP" data-cap="Halaman masuk SIGAP"><figcaption>Halaman masuk SIGAP</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab02">
+<div class="ch-h"><span class="ch-n">02</span><div><h2>Dashboard</h2><span class="muted small">Untuk: Admin / Operator</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>Baca kartu angka di bagian atas: <b>Total guru</b>, <b>Tepat waktu</b>, <b>Terlambat</b>, <b>Izin / Sakit</b>, dan <b>Belum hadir</b>.</li><li>Perhatikan pemberitahuan penting, misalnya pengajuan izin yang menunggu atau guru yang belum memiliki data wajah.</li><li>Pada tabel <b>Kehadiran hari ini</b>, lihat jam masuk, jam pulang, dan status tiap guru.</li><li>Tombol <b>Buka Absensi</b> di pojok kanan atas membuka layar kamera.</li></ol><div class="tip"><strong>Tips:</strong> Angka merah pada menu Pengajuan Izin menunjukkan jumlah izin yang menunggu keputusan.</div><a class="watch" href="index.html?t=81#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (1:21)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/dashboard.jpg" alt="Ringkasan kehadiran di Dashboard" data-cap="Ringkasan kehadiran di Dashboard"><figcaption>Ringkasan kehadiran di Dashboard</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab03">
+<div class="ch-h"><span class="ch-n">03</span><div><h2>Absensi dengan Kamera</h2><span class="muted small">Untuk: Admin / Operator, guru</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka menu <b>Absensi</b> di komputer yang diletakkan di pintu masuk atau ruang guru. Kamera aktif dan status menunjukkan <b>Siap</b>.</li><li>Guru menghadap kamera dan <b>menengok sedikit ke kiri atau kanan</b>. Ini pemeriksaan wajah asli supaya foto atau layar HP ditolak.</li><li>Nama dan tingkat kemiripan tampil di layar, lalu absen <b>masuk</b> tercatat dan sistem menyapa lewat suara.</li><li>Saat jam pulang, guru menghadap kamera lagi dan absen <b>pulang</b> tercatat.</li><li>Beberapa wajah dapat dikenali sekaligus. Daftar hadir hari ini tampil di sisi kanan layar.</li><li>Pilihan <b>Suara</b> dan <b>Layar penuh</b> ada di pojok kanan atas.</li></ol><div class="tip"><strong>Tips:</strong> Biarkan layar absensi terbuka seharian agar kamera siaga dan guru cukup menghadap kamera.</div><a class="watch" href="index.html?t=137#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (2:17)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/absensi.jpg" alt="Layar absensi dengan wajah dikenali" data-cap="Layar absensi dengan wajah dikenali"><figcaption>Layar absensi dengan wajah dikenali</figcaption></figure><figure class="shotbox"><img loading="lazy" src="img/sigap/pulang.jpg" alt="Absen pulang" data-cap="Absen pulang"><figcaption>Absen pulang</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab04">
+<div class="ch-h"><span class="ch-n">04</span><div><h2>Data Guru</h2><span class="muted small">Untuk: Admin</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>Buka <b>Data Guru</b>. Gunakan kolom pencarian untuk mencari nama, NIP, atau mata pelajaran.</li><li>Klik <b>Tambah Guru</b>, isi nama lengkap, NIP/NUPTK, mata pelajaran, dan status, lalu <b>Simpan</b>.</li><li>Klik <b>Wajah</b> pada baris guru. Jendela kamera terbuka.</li><li>Klik <b>Ambil 5 Sampel</b> (atau tekan Spasi) sambil guru menggerakkan kepala sedikit.</li><li>Klik <b>Simpan</b>, atau <b>Simpan &amp; berikutnya</b> untuk langsung mendaftarkan guru lain tanpa menunggu.</li><li>Ikon pensil dan tempat sampah pada tiap baris dipakai untuk mengubah atau menghapus data guru.</li></ol><div class="tip"><strong>Tips:</strong> Wajah yang mirip dengan guru lain akan diberi peringatan agar tidak terjadi data ganda.</div><a class="watch" href="index.html?t=236#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (3:56)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/dataguru.jpg" alt="Daftar data guru" data-cap="Daftar data guru"><figcaption>Daftar data guru</figcaption></figure><figure class="shotbox"><img loading="lazy" src="img/sigap/wajah.jpg" alt="Pendaftaran wajah dengan 5 sampel" data-cap="Pendaftaran wajah dengan 5 sampel"><figcaption>Pendaftaran wajah dengan 5 sampel</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab05">
+<div class="ch-h"><span class="ch-n">05</span><div><h2>Akun Guru</h2><span class="muted small">Untuk: Admin</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka <b>Akun Guru</b>, lalu klik <b>Buat akun untuk semua guru</b>.</li><li>Daftar <b>password sementara</b> tampil satu kali. Klik <b>Cetak</b> atau salin, lalu bagikan ke masing-masing guru.</li><li>Saat pertama masuk, guru diminta membuat password sendiri.</li><li>Di bagian <b>Daftar akun</b>, admin dapat mengganti username, mengatur password, <b>Reset password</b>, atau menghapus akun.</li></ol><div class="tip"><strong>Tips:</strong> Password sementara tidak bisa ditampilkan lagi. Jika terlewat, gunakan Reset password.</div><a class="watch" href="index.html?t=329#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (5:29)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/akun.jpg" alt="Pembuatan akun guru massal" data-cap="Pembuatan akun guru massal"><figcaption>Pembuatan akun guru massal</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab06">
+<div class="ch-h"><span class="ch-n">06</span><div><h2>Pengajuan Izin</h2><span class="muted small">Untuk: Admin, Kepala Sekolah, Wakasek</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>Buka <b>Pengajuan Izin</b> dan pilih tab status: Menunggu, Disetujui, Ditolak, Dibatalkan, atau Semua.</li><li>Lihat <b>progres persetujuan</b> pada tiap pengajuan: Kepala Sekolah, Wakasek Kurikulum, dan Admin.</li><li>Klik <b>Setujui</b> atau <b>Tolak</b> dari akun masing-masing. Penolakan wajib disertai alasan.</li><li>Atur siapa saja yang wajib menyetujui di <b>Aturan persetujuan</b>, termasuk apakah semua harus setuju atau cukup salah satu.</li><li>Izin yang disetujui otomatis tercatat di laporan untuk hari kerja pada rentang tanggalnya.</li></ol><div class="tip"><strong>Tips:</strong> Bila salah satu penyetuju menolak, pengajuan langsung berstatus Ditolak.</div><a class="watch" href="index.html?t=385#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (6:25)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/izin.jpg" alt="Daftar pengajuan izin dan progres persetujuan" data-cap="Daftar pengajuan izin dan progres persetujuan"><figcaption>Daftar pengajuan izin dan progres persetujuan</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab07">
+<div class="ch-h"><span class="ch-n">07</span><div><h2>Laporan Harian</h2><span class="muted small">Untuk: Admin, Operator</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka <b>Laporan</b> dan pilih tanggal.</li><li>Baca ringkasan jumlah Hadir, Belum hadir, Terlambat, dan Izin di bagian atas.</li><li>Tabel menampilkan jam masuk, jam pulang, status, tingkat kemiripan, dan <b>foto bukti</b> absen.</li><li>Untuk guru yang tidak absen wajah, klik <b>Ubah</b> lalu isi status manual (Izin, Sakit, Dinas Luar, Alpa) beserta keterangan.</li><li>Klik <b>Unduh Excel</b> untuk menyimpan laporan sebagai file yang dapat dibuka di Excel.</li></ol><a class="watch" href="index.html?t=458#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (7:38)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/laporan.jpg" alt="Laporan harian kehadiran" data-cap="Laporan harian kehadiran"><figcaption>Laporan harian kehadiran</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab08">
+<div class="ch-h"><span class="ch-n">08</span><div><h2>Rekap Bulanan</h2><span class="muted small">Untuk: Admin, Operator, pimpinan</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>Buka <b>Rekap</b> dan pilih bulan.</li><li>Tabel memuat hari efektif, tepat waktu, terlambat, sakit, izin, cuti/dinas, alpa, dan persentase kehadiran. Hari libur tidak dihitung.</li><li>Klik nama guru untuk melihat kalender riwayat kehadirannya.</li><li>Klik <b>Unduh Excel</b> bila rekap perlu dilaporkan atau dicetak.</li></ol><div class="tip"><strong>Tips:</strong> Kehadiran dihitung dari (tepat waktu + terlambat) dibagi hari efektif.</div><a class="watch" href="index.html?t=508#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (8:28)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/rekap.jpg" alt="Rekap kehadiran per bulan" data-cap="Rekap kehadiran per bulan"><figcaption>Rekap kehadiran per bulan</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab09">
+<div class="ch-h"><span class="ch-n">09</span><div><h2>Kalender Kerja</h2><span class="muted small">Untuk: Admin</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka <b>Kalender Kerja</b>. Warna hijau menandakan hari kerja, abu-abu hari libur.</li><li>Centang hari kerja setiap minggu (bawaan Senin sampai Jumat), lalu klik <b>Simpan</b>.</li><li>Tambahkan hari libur: isi rentang tanggal dan keterangan, lalu klik <b>Tambah</b>.</li><li>Daftar libur tahun berjalan tampil di bagian bawah dan dapat dihapus.</li></ol><div class="tip"><strong>Tips:</strong> Atur kalender sebelum rekap bulanan dipakai agar hari libur tidak terhitung sebagai alpa.</div><a class="watch" href="index.html?t=560#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (9:20)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/kalender.jpg" alt="Kalender kerja dan hari libur" data-cap="Kalender kerja dan hari libur"><figcaption>Kalender kerja dan hari libur</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab10">
+<div class="ch-h"><span class="ch-n">10</span><div><h2>Backup &amp; Pulihkan</h2><span class="muted small">Untuk: Admin</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>SIGAP membuat <b>backup otomatis setiap hari</b>. Riwayatnya tampil di tabel bawah.</li><li>Untuk backup sendiri, klik <b>Unduh backup</b>. Centang opsi bila foto absensi ingin ikut disimpan.</li><li>Untuk memulihkan data atau pindah komputer, pilih file backup pada kotak <b>Pulihkan</b>, lalu konfirmasi.</li></ol><div class="tip"><strong>Tips:</strong> Memulihkan backup menggantikan seluruh data saat ini. Pastikan file yang dipilih sudah benar.</div><a class="watch" href="index.html?t=606#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (10:06)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/backup.jpg" alt="Halaman backup" data-cap="Halaman backup"><figcaption>Halaman backup</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab11">
+<div class="ch-h"><span class="ch-n">11</span><div><h2>Portal Guru</h2><span class="muted small">Untuk: Guru</span></div></div>
+<div class="ch-b"><div><ol class="steps"><li>Buka link portal guru (<b>/guru</b>) dari HP, lalu masuk dengan username dan password.</li><li>Menu <b>Riwayat saya</b> menampilkan kalender berwarna, jumlah tiap status, dan persentase kehadiran bulan ini.</li><li>Menu <b>Ajukan izin</b>: pilih jenis (Sakit, Izin, Keluar Kota, Dinas Luar, Cuti), isi tanggal dan alasan, lampirkan foto surat bila ada (maksimal 5 MB), lalu <b>Kirim pengajuan</b>.</li><li>Pantau status dan progres persetujuan di kotak <b>Pengajuan saya</b>.</li></ol><div class="tip"><strong>Tips:</strong> Pengajuan yang masih menunggu masih bisa dibatalkan oleh guru.</div><a class="watch" href="index.html?t=657#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (10:57)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/guru.jpg" alt="Formulir pengajuan izin guru" data-cap="Formulir pengajuan izin guru"><figcaption>Formulir pengajuan izin guru</figcaption></figure><figure class="shotbox"><img loading="lazy" src="img/sigap/guru-kalender.jpg" alt="Kalender riwayat pribadi guru" data-cap="Kalender riwayat pribadi guru"><figcaption>Kalender riwayat pribadi guru</figcaption></figure></div></div>
+</section>
+<section class="card ch" id="bab12">
+<div class="ch-h"><span class="ch-n">12</span><div><h2>Portal Pimpinan</h2><span class="muted small">Untuk: Kepala Sekolah, Wakasek</span></div></div>
+<div class="ch-b flip"><div><ol class="steps"><li>Buka link portal pimpinan (<b>/pimpinan</b>) dari HP, lalu masuk dengan akun Kepala Sekolah atau Wakasek.</li><li>Menu <b>Persetujuan</b> memuat izin yang menunggu. Baca detailnya, isi catatan bila perlu, lalu tekan <b>Setujui</b> atau <b>Tolak</b>.</li><li>Menu <b>Riwayat izin</b> menampilkan keputusan yang sudah diambil.</li><li>Menu <b>Kehadiran hari ini</b> menampilkan siapa yang sudah hadir, terlambat, atau belum hadir.</li></ol><div class="tip"><strong>Tips:</strong> Kepala Sekolah dan Wakasek tidak perlu menyalakan aplikasi. Cukup membuka link dari HP.</div><a class="watch" href="index.html?t=726#demo-sigap"><svg class="i"><use href="#i-play"/></svg> Tonton bagian ini di video (12:06)</a></div><div class="shots2"><figure class="shotbox"><img loading="lazy" src="img/sigap/pimpinan.jpg" alt="Persetujuan izin di portal pimpinan" data-cap="Persetujuan izin di portal pimpinan"><figcaption>Persetujuan izin di portal pimpinan</figcaption></figure><figure class="shotbox"><img loading="lazy" src="img/sigap/pimpinan-hadir.jpg" alt="Kehadiran guru hari ini" data-cap="Kehadiran guru hari ini"><figcaption>Kehadiran guru hari ini</figcaption></figure></div></div>
+</section>
+<section class="card pad2 faq" id="faq"><h3 style="font-size:1.25rem;margin-bottom:4px">Masalah umum</h3><details><summary>Kamera tidak menyala</summary><p>Izinkan akses kamera pada browser. Kamera hanya diizinkan bila SIGAP dibuka lewat <b>http://localhost</b> (atau 127.0.0.1) atau alamat <b>https://</b>. Untuk komputer lain di jaringan sekolah, gunakan HTTPS.</p></details><details><summary>Wajah guru tidak dikenali</summary><p>Pastikan cahaya cukup dan wajah tidak terlalu jauh dari kamera. Bila tetap gagal, daftarkan ulang wajah dengan 5 sampel dan centang <b>Ganti sampel lama</b>.</p></details><details><summary>Portal guru atau pimpinan tidak terbuka dari HP</summary><p>HP harus terhubung ke Wi-Fi yang sama dengan komputer SIGAP. Bila masih gagal, izinkan Python pada Windows Firewall (jaringan Private). Alamat yang benar ada di <b>Pengaturan → Link &amp; alamat website</b>.</p></details><details><summary>Guru lupa password</summary><p>Admin membuka <b>Akun Guru</b> lalu klik <b>Reset password</b>. Guru akan diminta membuat password baru saat masuk.</p></details><details><summary>Internet sekolah mati, apakah absensi tetap jalan?</summary><p>Ya. Absensi tidak menunggu pengiriman pesan. Notifikasi ke kurikulum disimpan dalam antrean dan dikirim ulang otomatis setelah internet kembali.</p></details><details><summary>Ke mana notifikasi kehadiran dikirim?</summary><p>Ke bagian kurikulum lewat Telegram, WhatsApp, atau halaman Monitor Kurikulum. Pengaturannya ada di menu <b>Notifikasi</b>.</p></details></section>
+</div></main>
+
+<footer class="pf"><div class="wrap"><b>VoSisTer_IoT</b>Panduan Penggunaan SIGAP · Proyek Kepemimpinan Mahasiswa PPG Universitas Negeri Makassar<br><span style="opacity:.7">© 2026 Tim VoSisTer_IoT</span></div></footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true"><button type="button" aria-label="Tutup">&times;</button><img alt=""><p></p></div>
+<script>
+(function(){
+  var root = document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var n = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', n);
+    try { localStorage.setItem('vosister-theme', n); } catch(e){}
+  });
+  var lb = document.getElementById('lb'), im = lb.querySelector('img'), p = lb.querySelector('p');
+  lb.addEventListener('click', function(){ lb.classList.remove('open'); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape') lb.classList.remove('open'); });
+  document.querySelectorAll('.shotbox img').forEach(function(i){ i.addEventListener('click', function(){ im.src = i.src; p.textContent = i.dataset.cap || ''; lb.classList.add('open'); }); });
+})();
+</script>
+</body>
+</html>
