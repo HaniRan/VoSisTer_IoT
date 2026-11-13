@@ -701,11 +701,10 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
           <div class="badge"><i></i>Video pengenalan</div>
         </div>
 
-        <!-- Video SIGAP: video/sigap-pameran.mp4 -->
         <div class="media3d" data-tilt data-tilt-max="6" data-tilt-base="-8" style="margin-top:76px;--c:var(--teal)">
           <div class="media" style="aspect-ratio:16/9">
             <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video aplikasi SIGAP</div>
-            <video controls preload="metadata" playsinline poster="img/sigap/pameran-poster.jpg"><source src="video/sigap-pameran.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
+            <video autoplay loop muted playsinline poster="img/sigap/pameran-poster.jpg"><source src="video/sigap-pameran.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
           </div>
           <div class="badge"><i style="background:var(--teal);box-shadow:0 0 12px var(--teal)"></i>Video SIGAP</div>
         </div>
@@ -811,7 +810,6 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
           <li>Backup data dan masalah umum</li>
         </ol>        <div class="actions">
           <a class="btn solid sm" href="panduan-sigap.html"><svg class="i"><use href="#i-file"/></svg> Baca Panduan</a>
-          <a class="btn sm" href="#akses"><svg class="i"><use href="#i-pin"/></svg> Cara Akses</a>
         </div>
       </div>
       </div>
@@ -839,7 +837,7 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
           </div>
           <button class="vbox yt-lite" id="ytBtn" data-id="d41pdQIb6cQ" aria-label="Putar video demo trainer sistem starter">
             <span class="pl"><svg class="i"><use href="#i-play"/></svg></span>
-            <span class="yl">Ketuk untuk memutar<br><small>Dibuka dari YouTube</small></span>
+            <span class="yl">Memuat video…<br><small>Ketuk jika belum berputar</small></span>
           </button>
           <div class="vf"><a class="btn sm" href="https://youtu.be/d41pdQIb6cQ" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg> Buka di YouTube</a></div>
         </div>
@@ -850,51 +848,14 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
           <div class="vh">
             <div class="kind muted small" style="font-weight:600">SIGAP · 13 menit</div>
             <h3>Tutorial Aplikasi SIGAP</h3>
-            <p class="muted small">Pilih bab untuk langsung loncat ke bagian yang dibutuhkan.</p>
+            <p class="muted small">Alur lengkap dari masuk, absensi, sampai laporan dan izin.</p>
           </div>
-          <div class="vbox"><video id="sigapVideo" controls preload="none" playsinline poster="img/sigap/poster.jpg" src="video/sigap-tutorial.mp4"></video></div>
-          <div class="chap" id="chap" role="group" aria-label="Bab video"><button type="button" data-t="33">01 Masuk<small>0:33</small></button><button type="button" data-t="81">02 Dashboard<small>1:21</small></button><button type="button" data-t="137">03 Absensi kamera<small>2:17</small></button><button type="button" data-t="236">04 Data guru<small>3:56</small></button><button type="button" data-t="329">05 Akun guru<small>5:29</small></button><button type="button" data-t="385">06 Pengajuan izin<small>6:25</small></button><button type="button" data-t="458">07 Laporan harian<small>7:38</small></button><button type="button" data-t="508">08 Rekap bulanan<small>8:28</small></button><button type="button" data-t="560">09 Kalender kerja<small>9:20</small></button><button type="button" data-t="606">10 Backup<small>10:06</small></button><button type="button" data-t="657">11 Portal guru<small>10:57</small></button><button type="button" data-t="726">12 Portal pimpinan<small>12:06</small></button></div>
+          <div class="vbox"><video id="sigapVideo" controls muted loop playsinline preload="metadata" poster="img/sigap/poster.jpg" src="video/sigap-tutorial.mp4"></video></div>
+          <div class="vf"><a class="btn solid sm" href="panduan-sigap.html"><svg class="i"><use href="#i-file"/></svg> Baca Panduan</a></div>
         </div>
       </div>
     </div>
 
-    <div class="shots-wrap rv">
-      <div class="shots-h"><h3>Tampilan aplikasi <span class="grad">SIGAP</span></h3><span class="muted small">Geser untuk melihat, ketuk untuk memperbesar</span></div>
-      <div class="shots" id="shots"><button class="shot" type="button" data-src="img/sigap/absensi.jpg" data-cap="Absensi kamera"><img loading="lazy" src="img/sigap/absensi.jpg" alt="Tampilan Absensi kamera SIGAP"><span>Absensi kamera<br><small class="muted">Wajah dikenali, hadir tercatat</small></span></button><button class="shot" type="button" data-src="img/sigap/dashboard.jpg" data-cap="Dashboard"><img loading="lazy" src="img/sigap/dashboard.jpg" alt="Tampilan Dashboard SIGAP"><span>Dashboard<br><small class="muted">Ringkasan kehadiran hari ini</small></span></button><button class="shot" type="button" data-src="img/sigap/laporan.jpg" data-cap="Laporan harian"><img loading="lazy" src="img/sigap/laporan.jpg" alt="Tampilan Laporan harian SIGAP"><span>Laporan harian<br><small class="muted">Jam, status, dan foto bukti</small></span></button><button class="shot" type="button" data-src="img/sigap/rekap.jpg" data-cap="Rekap bulanan"><img loading="lazy" src="img/sigap/rekap.jpg" alt="Tampilan Rekap bulanan SIGAP"><span>Rekap bulanan<br><small class="muted">Hari efektif dan persentase</small></span></button><button class="shot" type="button" data-src="img/sigap/izin.jpg" data-cap="Pengajuan izin"><img loading="lazy" src="img/sigap/izin.jpg" alt="Tampilan Pengajuan izin SIGAP"><span>Pengajuan izin<br><small class="muted">Progres persetujuan</small></span></button><button class="shot" type="button" data-src="img/sigap/pimpinan.jpg" data-cap="Portal pimpinan"><img loading="lazy" src="img/sigap/pimpinan.jpg" alt="Tampilan Portal pimpinan SIGAP"><span>Portal pimpinan<br><small class="muted">Setujui izin dari HP</small></span></button><button class="shot" type="button" data-src="img/sigap/guru.jpg" data-cap="Portal guru"><img loading="lazy" src="img/sigap/guru.jpg" alt="Tampilan Portal guru SIGAP"><span>Portal guru<br><small class="muted">Ajukan izin dari HP</small></span></button></div>
-    </div>
-
-    <div id="akses" class="center" style="margin:110px 0 56px">
-      <span class="kicker rv">Akses SIGAP</span>
-      <h3 class="h2 split" style="font-size:clamp(1.9rem,4.4vw,3rem)">Siapa membuka <span class="grad">apa</span></h3>
-      <p class="lead rv">SIGAP terpasang di komputer sekolah dan punya tiga pintu masuk sesuai peran.</p>
-    </div>
-
-    <div class="role-grid">
-      <div class="rv" style="display:flex"><div class="card role" style="--c:var(--cyan);flex:1">
-        <div class="ico"><svg class="i"><use href="#i-school"/></svg></div>
-        <h3>Admin &amp; Operator</h3>
-        <p class="muted small">Menjalankan absensi kamera di PC sekolah, mengelola data guru, laporan, rekap, kalender kerja, dan backup.</p>
-        <code class="path">/login</code>
-      </div></div>
-      <div class="rv" style="display:flex"><div class="card role" style="--c:var(--teal);flex:1">
-        <div class="ico"><svg class="i"><use href="#i-users"/></svg></div>
-        <h3>Guru</h3>
-        <p class="muted small">Dari HP: melihat riwayat kehadiran pribadi, mengajukan izin (sakit, izin, dinas luar, cuti), dan memantau persetujuannya.</p>
-        <code class="path">/guru</code>
-      </div></div>
-      <div class="rv" style="display:flex"><div class="card role" style="--c:var(--amber);flex:1">
-        <div class="ico"><svg class="i"><use href="#i-flag"/></svg></div>
-        <h3>Kepala Sekolah &amp; Wakasek</h3>
-        <p class="muted small">Dari HP: menyetujui atau menolak pengajuan izin, melihat riwayat izin, dan memantau kehadiran hari ini.</p>
-        <code class="path">/pimpinan</code>
-      </div></div>
-    </div>
-
-    <div class="note-box rv">
-      <svg class="i"><use href="#i-pin"/></svg>
-      <div id="aksesText"><strong>Alamat portal.</strong> SIGAP berjalan di komputer sekolah, jadi portal guru dan pimpinan dibuka lewat alamat jaringan sekolah (Wi-Fi yang sama), misalnya <code>http://192.168.x.x:5000/guru</code>. Admin dapat menyalin alamat yang benar di menu <strong>Pengaturan → Link &amp; alamat website</strong>.</div>
-    </div>
-    <div class="center" style="margin-top:36px"><a class="btn solid" href="panduan-sigap.html"><svg class="i"><use href="#i-file"/></svg> Buka Panduan Lengkap SIGAP</a></div>
   </div>
 </section>
 
@@ -911,56 +872,92 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
 
     <div class="gallery" id="gallery">
       <div class="gal rv">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Perakitan alat</div>
-        <img src="images/foto1.jpg" alt="Perakitan alat" loading="lazy" onerror="this.remove()">
-        <div class="cap">Perakitan alat</div>
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Menggerinda rangka trainer</div>
+        <img src="https://drive.google.com/thumbnail?id=19kU6RqcoIk7gBf5D30Dm1y8jN3InOegX&amp;sz=w800" alt="Menggerinda rangka trainer" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Menggerinda rangka trainer</div>
       </div>
       <div class="gal rv">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Uji coba sensor</div>
-        <img src="images/foto2.jpg" alt="Uji coba sensor" loading="lazy" onerror="this.remove()">
-        <div class="cap">Uji coba sensor</div>
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pengerjaan rangka</div>
+        <img src="https://drive.google.com/thumbnail?id=10-EXLTDDmUfDxI1WOzk1b92_rBkWObbD&amp;sz=w800" alt="Pengerjaan rangka" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Pengerjaan rangka</div>
       </div>
-      <div class="gal w2 h2 rv">
-        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video demonstrasi trainer &amp; absensi</div>
-        <video autoplay loop muted playsinline><source src="images/vid2.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
-        <div class="cap">Demonstrasi trainer &amp; absensi</div>
-      </div>
-      <div class="gal rv">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Diskusi tim</div>
-        <img src="images/foto3.jpg" alt="Diskusi tim" loading="lazy" onerror="this.remove()">
-        <div class="cap">Diskusi tim</div>
+      <div class="gal w2 h2 rv" data-vid="1YJXDytQy31Jsp3eKstyELLOVrQF2u2df" style="cursor:pointer">
+        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video proses pembuatan</div>
+        <img src="https://drive.google.com/thumbnail?id=1YJXDytQy31Jsp3eKstyELLOVrQF2u2df&amp;sz=w1000" alt="Video proses pembuatan" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <span class="pl" style="position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;z-index:3;font-size:26px;color:#03141c;background:linear-gradient(135deg,var(--teal),var(--cyan));box-shadow:0 12px 30px -6px rgba(34,195,240,.7);pointer-events:none"><svg class="i"><use href="#i-play"/></svg></span>
+        <div class="cap">Video proses pembuatan</div>
       </div>
       <div class="gal rv">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Tampilan aplikasi absensi</div>
-        <img src="img/sigap/absensi.jpg" alt="Tampilan aplikasi absensi SIGAP" loading="lazy" onerror="this.remove()">
-        <div class="cap">Tampilan aplikasi absensi</div>
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Perakitan bersama tim</div>
+        <img src="https://drive.google.com/thumbnail?id=1_TjpYgDahXPSVlbNmfbfSsnBhK5d1yaE&amp;sz=w800" alt="Perakitan bersama tim" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Perakitan bersama tim</div>
       </div>
-
-      <!-- Muncul setelah klik "Lihat semua" -->
-      <div class="gal w2 extra">
-        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video kegiatan</div>
-        <video autoplay loop muted playsinline><source src="images/vid3.mp4" type="video/mp4" onerror="this.parentNode.remove()"></video>
-        <div class="cap">Video kegiatan</div>
+      <div class="gal rv">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pengukuran dan penyusunan rangka</div>
+        <img src="https://drive.google.com/thumbnail?id=1_B56L5PKzJACyoNuslV6-CQVULJWZCo6&amp;sz=w800" alt="Pengukuran dan penyusunan rangka" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Pengukuran dan penyusunan rangka</div>
       </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Wiring panel</div>
-        <img src="images/foto5.jpg" alt="Wiring panel" loading="lazy" onerror="this.remove()">
-        <div class="cap">Wiring panel</div>
-      </div>
-      <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Konsultasi dosen</div>
-        <img src="images/foto6.jpg" alt="Konsultasi dosen" loading="lazy" onerror="this.remove()">
-        <div class="cap">Konsultasi dosen</div>
+      <div class="gal w2 extra" data-vid="1JoufN7sYy3vL3Tgb_u7Xmy-URg2hUn4h" style="cursor:pointer">
+        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video proses pembuatan</div>
+        <img src="https://drive.google.com/thumbnail?id=1JoufN7sYy3vL3Tgb_u7Xmy-URg2hUn4h&amp;sz=w1000" alt="Video proses pembuatan" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <span class="pl" style="position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;z-index:3;font-size:26px;color:#03141c;background:linear-gradient(135deg,var(--teal),var(--cyan));box-shadow:0 12px 30px -6px rgba(34,195,240,.7);pointer-events:none"><svg class="i"><use href="#i-play"/></svg></span>
+        <div class="cap">Video proses pembuatan</div>
       </div>
       <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pembelajaran di kelas</div>
-        <img src="images/foto7.jpg" alt="Pembelajaran di kelas" loading="lazy" onerror="this.remove()">
-        <div class="cap">Pembelajaran di kelas</div>
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Proses pembuatan trainer</div>
+        <img src="https://drive.google.com/thumbnail?id=19hZxuWswC99jCbNFDHnMF3wrXi1Unuk7&amp;sz=w800" alt="Proses pembuatan trainer" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Proses pembuatan trainer</div>
       </div>
       <div class="gal extra">
-        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Foto bersama</div>
-        <img src="images/foto8.jpg" alt="Foto bersama" loading="lazy" onerror="this.remove()">
-        <div class="cap">Foto bersama</div>
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Rangka besi trainer</div>
+        <img src="https://drive.google.com/thumbnail?id=1G1Rfrp0JD01piPD6vBe16UUeSqDQVxPp&amp;sz=w800" alt="Rangka besi trainer" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Rangka besi trainer</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Istirahat usai bekerja</div>
+        <img src="https://drive.google.com/thumbnail?id=1mj6KEEpmuCK0fRkfB39NjHNNYRQKWpiB&amp;sz=w800" alt="Istirahat usai bekerja" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Istirahat usai bekerja</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Menggambar rancangan</div>
+        <img src="https://drive.google.com/thumbnail?id=1IP3wNg2pvtiftdcLiXU7ZW4w23gMRAG5&amp;sz=w800" alt="Menggambar rancangan" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Menggambar rancangan</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Sketsa rancangan sistem</div>
+        <img src="https://drive.google.com/thumbnail?id=1n0OCuOwlAawTX6k1IocJaxLxPeAyEw-N&amp;sz=w800" alt="Sketsa rancangan sistem" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Sketsa rancangan sistem</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pemasangan papan trainer</div>
+        <img src="https://drive.google.com/thumbnail?id=17OSNETNeGvFDXy3oXRCz6mIY57_gjDuF&amp;sz=w800" alt="Pemasangan papan trainer" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Pemasangan papan trainer</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Kerja tim</div>
+        <img src="https://drive.google.com/thumbnail?id=1QpOrUVs6Zh0kH9r0OVutV31bInObwfMR&amp;sz=w800" alt="Kerja tim" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Kerja tim</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Proses pembuatan</div>
+        <img src="https://drive.google.com/thumbnail?id=1aAZZRIKolXGPv7nDv6dygvvcmCLuwimQ&amp;sz=w800" alt="Proses pembuatan" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Proses pembuatan</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Memasang panel</div>
+        <img src="https://drive.google.com/thumbnail?id=1PB0yqX1vmuMxgiPyDIZkKdmcSmNHGI7L&amp;sz=w800" alt="Memasang panel" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Memasang panel</div>
+      </div>
+      <div class="gal extra">
+        <div class="ph"><svg class="i"><use href="#i-image"/></svg>Pengerjaan trainer</div>
+        <img src="https://drive.google.com/thumbnail?id=15MBxjNbSMb3GoEx8movFyFfm0stNpdMH&amp;sz=w800" alt="Pengerjaan trainer" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <div class="cap">Pengerjaan trainer</div>
+      </div>
+      <div class="gal w2 extra" data-vid="1LGV6uMlAo1xeGI8z-j7TjxGYl816IeOW" style="cursor:pointer">
+        <div class="ph"><svg class="i"><use href="#i-video"/></svg>Video proses pembuatan</div>
+        <img src="https://drive.google.com/thumbnail?id=1LGV6uMlAo1xeGI8z-j7TjxGYl816IeOW&amp;sz=w1000" alt="Video proses pembuatan" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+        <span class="pl" style="position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;z-index:3;font-size:26px;color:#03141c;background:linear-gradient(135deg,var(--teal),var(--cyan));box-shadow:0 12px 30px -6px rgba(34,195,240,.7);pointer-events:none"><svg class="i"><use href="#i-play"/></svg></span>
+        <div class="cap">Video proses pembuatan</div>
       </div>
     </div>
 
@@ -1521,50 +1518,44 @@ code.path{align-self:flex-start;margin-top:auto;font:700 14px ui-monospace,Conso
 <script>
 /* ===== Tambahan: video demo, akses SIGAP, lightbox ===== */
 (function(){
-  // Isi bila SIGAP sudah di-hosting / punya alamat tetap, contoh: "https://absen.sekolahku.sch.id"
-  var SIGAP_URL = "";
   var $ = function(s,r){ return (r||document).querySelector(s); }, $$ = function(s,r){ return [].slice.call((r||document).querySelectorAll(s)); };
 
   var yt = $('#ytBtn');
-  if (yt) yt.addEventListener('click', function(){
+  function loadYT(){
+    if (!yt || !yt.parentNode) return;
     var f = document.createElement('iframe');
-    f.src = 'https://www.youtube-nocookie.com/embed/' + yt.dataset.id + '?autoplay=1&rel=0';
+    f.src = 'https://www.youtube-nocookie.com/embed/' + yt.dataset.id + '?autoplay=1&mute=1&playsinline=1&rel=0';
     f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen';
     f.allowFullscreen = true; f.title = 'Demo Trainer Sistem Starter IoT';
-    var w = document.createElement('div'); w.className = 'vbox'; w.appendChild(f); yt.replaceWith(w);
-  }, { once: true });
-
-  var vid = $('#sigapVideo'), chap = $('#chap');
-  function seek(t){
-    var go = function(){ vid.currentTime = t; var p = vid.play(); if (p && p.catch) p.catch(function(){}); };
-    if (vid.readyState) go(); else { vid.addEventListener('loadedmetadata', go, { once: true }); vid.load(); }
+    var w = document.createElement('div'); w.className = 'vbox'; w.appendChild(f); yt.replaceWith(w); yt = null;
   }
-  if (vid && chap){
-    var btns = $$('button', chap), times = btns.map(function(b){ return +b.dataset.t; });
-    btns.forEach(function(b){ b.addEventListener('click', function(){ seek(+b.dataset.t); }); });
-    vid.addEventListener('timeupdate', function(){
-      var on = -1; times.forEach(function(t,i){ if (vid.currentTime >= t - 1) on = i; });
-      btns.forEach(function(b,i){ b.classList.toggle('on', i === on); });
-    });
+  if (yt){
+    yt.addEventListener('click', loadYT, { once: true });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(en,o){ if (en[0].isIntersecting){ o.disconnect(); loadYT(); } }, { threshold: .4 }).observe(yt);
+  }
+
+  var vid = $('#sigapVideo');
+  if (vid){
+    vid.muted = true;
     var q = new URLSearchParams(location.search).get('t');
-    if (q && !isNaN(q)){
-      vid.addEventListener('loadedmetadata', function(){ vid.currentTime = +q; }, { once: true });
-      vid.load();
-      setTimeout(function(){ var el = $('#demo-sigap'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 110, behavior: 'smooth' }); }, 900);
-    }
+    var start = (q && !isNaN(q)) ? +q : 0;
+    if (start) vid.addEventListener('loadedmetadata', function(){ vid.currentTime = start; }, { once: true });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(en){
+      en.forEach(function(e){ if (e.isIntersecting){ var p = vid.play(); if (p && p.catch) p.catch(function(){}); } else vid.pause(); });
+    }, { threshold: .5 }).observe(vid);
+    if (start) setTimeout(function(){ var el = $('#demo-sigap'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - 110, behavior: 'smooth' }); }, 900);
   }
 
-  if (SIGAP_URL){
-    var base = SIGAP_URL.replace(/\/$/, ''), t = $('#aksesText');
-    if (t) t.innerHTML = '<strong>Alamat portal.</strong> Buka dari HP atau komputer mana saja: <a class="c-cyan" href="'+base+'/guru" target="_blank" rel="noopener"><strong>'+base+'/guru</strong></a> (guru) dan <a class="c-cyan" href="'+base+'/pimpinan" target="_blank" rel="noopener"><strong>'+base+'/pimpinan</strong></a> (Kepala Sekolah &amp; Wakasek).';
-  }
-
-  var lb = document.createElement('div'); lb.className = 'lb'; lb.setAttribute('role','dialog'); lb.setAttribute('aria-modal','true');
-  lb.innerHTML = '<button type="button" aria-label="Tutup">\u00d7</button><img alt=""><p></p>'; document.body.appendChild(lb);
-  function close(){ lb.classList.remove('open'); }
-  lb.addEventListener('click', close);
-  addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-  $$('.shot').forEach(function(s){ s.addEventListener('click', function(){ $('img',lb).src = s.dataset.src; $('p',lb).textContent = s.dataset.cap; lb.classList.add('open'); }); });
+  // Galeri: video Drive diputar saat diketuk
+  $$('.gal[data-vid]').forEach(function(g){
+    g.addEventListener('click', function(){
+      if (g.querySelector('iframe')) return;
+      var f = document.createElement('iframe');
+      f.src = 'https://drive.google.com/file/d/' + g.dataset.vid + '/preview'; f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true;
+      f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;background:#000';
+      g.appendChild(f);
+    }, { once: true });
+  });
 })();
 </script>
 </body>
